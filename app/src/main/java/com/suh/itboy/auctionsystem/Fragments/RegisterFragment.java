@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.suh.itboy.auctionsystem.Activities.AccountActivity;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
@@ -36,7 +37,7 @@ public class RegisterFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Register();
+                onRegister();
             }
         });
 
@@ -44,14 +45,19 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private void Register(){
+    private void onRegister(){
         if (ValidateRegister()){
             return;
         }
+
+        AccountActivity.showProgressDialog("Registering...");
+        Register();
     }
 
 
+    private void Register(){
 
+    }
     private boolean ValidateRegister(){
         if (!Validate.full_name(name.getText().toString())){
             name.setError("Invalid Name letters and space allowed.");

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.suh.itboy.auctionsystem.Activities.AccountActivity;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
@@ -39,18 +40,22 @@ public class LoginFragment extends Fragment {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SignIn();
+                onLogin();
             }
         });
         return view;
     }
 
-    private void SignIn(){
-
+    private void onLogin(){
         if (!ValidateLogin()){
             return;
         }
+        //Show progress dialog
+        AccountActivity.showProgressDialog("Authenticating...");
+        Login();
 
+    }
+    private void Login(){
     }
     private boolean ValidateLogin(){
 
