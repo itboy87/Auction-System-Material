@@ -13,7 +13,7 @@ import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static DatabaseHelper sInstance;
+    private static SQLiteDatabase sInstance;
 
     private static final String DATABASE_NAME = "auction";
     private static final int DATABASE_VERSION = 1;
@@ -26,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PROFILE = "create table "
             + ProfileDBAdapter.DATABASE_TABLE+" (_id integer primary key autoincrement, "
+            + ProfileDBAdapter.COLUMN_USER_ID+" integer REFERENCES "
+                + UserDBAdapter.DATABASE_TABLE+","
             + ProfileDBAdapter.COLUMN_NAME+" TEXT,"
             + ProfileDBAdapter.COLUMN_AVATAR+" TEXT" + ");";
 
@@ -36,19 +38,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ProductDBAdapter.COLUMN_PRICE+" INT"
             + ProductDBAdapter.COLUMN_CREATED+" INT" + ");";
 
-    public static synchronized DatabaseHelper getInstance(Context context) {
+    public static synchronized SQLiteDatabase getInstance(Context context) {
 
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new DatabaseHelper(context.getApplicationContext());
+            sInstance = new DatabaseHelper(context.getApplicationContext()).getWritableDatabase();
         }
         return sInstance;
     }
 
     //Wrap for getInstance can be used either
-    public static DatabaseHelper initialize(Context context){
+    public static SQLiteDatabase initialize(Context context){
         return getInstance(context);
     }
 
@@ -77,5 +79,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             sInstance.close();
             sInstance = null;
         }
+    }
+
+    public static void beginTransaction(){
+        //TODO: exception handling for twice transaction error
+        sInstance.beginTransaction();
+    }
+
+    public static void rollbackTransaction(){
+            sInstance.endTransaction();
+    }
+
+    public static void commitTransaction(){
+        sInstance.setTransactionSuccessful();
+        sInstance.endTransaction();
     }
 }
