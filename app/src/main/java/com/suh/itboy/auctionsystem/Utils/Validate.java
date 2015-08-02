@@ -15,15 +15,23 @@ import java.util.regex.Pattern;
  * Created by itboy on 8/1/2015.
  */
 public class Validate {
+    public static boolean isEmpty(String $value){
+
+        //String.isEmpty() throws exception on null
+        if ($value == null)
+            return false;
+
+        return $value.trim().isEmpty();
+    }
     public static boolean email(String email){
-        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())
+        if (!isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())
             return true;
         else
             return false;
     }
 
     public static boolean password(String pass,int min, int max){
-        if (pass.isEmpty())
+        if (isEmpty(pass))
             return false;
 
         int length = pass.length();
