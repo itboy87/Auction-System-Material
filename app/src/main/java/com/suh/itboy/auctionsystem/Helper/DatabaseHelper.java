@@ -13,7 +13,6 @@ import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
     private static DatabaseHelper sInstance;
 
     private static final String DATABASE_NAME = "auction";
@@ -23,12 +22,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + UserDBAdapter.DATABASE_TABLE +" (_id integer primary key autoincrement, "
             + UserDBAdapter.COLUMN_EMAIL+ " TEXT,"
             + UserDBAdapter.COLUMN_PASS+ " TEXT,"
-            + UserDBAdapter.COLUMN_CREATED+ " DATETIME DEFAULT CURRENT_TIMESTAMP," + ");";
+            + UserDBAdapter.COLUMN_CREATED+ " DATETIME DEFAULT CURRENT_TIMESTAMP" + ");";
 
     private static final String CREATE_TABLE_PROFILE = "create table "
             + ProfileDBAdapter.DATABASE_TABLE+" (_id integer primary key autoincrement, "
             + ProfileDBAdapter.COLUMN_NAME+" TEXT,"
-            + ProfileDBAdapter.COLUMN_AVATAR+" TEXT," + ");";
+            + ProfileDBAdapter.COLUMN_AVATAR+" TEXT" + ");";
 
     private static final String CREATE_TABLE_PRODUCT = "create table "
             + ProductDBAdapter.DATABASE_TABLE+" (_id integer primary key autoincrement, "
@@ -46,6 +45,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             sInstance = new DatabaseHelper(context.getApplicationContext());
         }
         return sInstance;
+    }
+
+    //Wrap for getInstance can be used either
+    public static DatabaseHelper initialize(Context context){
+        return getInstance(context);
     }
 
     /**
@@ -69,7 +73,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void close(){
-        sInstance.close();
-        sInstance = null;
+        if (null != sInstance){
+            sInstance.close();
+            sInstance = null;
+        }
     }
 }

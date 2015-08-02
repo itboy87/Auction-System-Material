@@ -1,11 +1,8 @@
 package com.suh.itboy.auctionsystem.Utils;
 
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
@@ -20,7 +17,6 @@ public class Validate {
         //String.isEmpty() throws exception on null
         if ($value == null)
             return false;
-
         return $value.trim().isEmpty();
     }
     public static boolean email(String email){

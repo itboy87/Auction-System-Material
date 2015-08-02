@@ -13,8 +13,6 @@ import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
 public class ProductDBAdapter implements BaseColumns {
     public static final String TAG = ProductDBAdapter.class.getName();
 
-    public static final String ROW_ID = "_id";
-
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CREATED = "created_at";
@@ -28,11 +26,11 @@ public class ProductDBAdapter implements BaseColumns {
 
     public ProductDBAdapter(Context ctx) {
         mDbHelper = DatabaseHelper.getInstance(ctx);
+        this.open();
     }
 
-    public ProductDBAdapter open() throws SQLException {
+    private void open() throws SQLException {
         this.mDb = this.mDbHelper.getWritableDatabase();
-        return this;
     }
 
 

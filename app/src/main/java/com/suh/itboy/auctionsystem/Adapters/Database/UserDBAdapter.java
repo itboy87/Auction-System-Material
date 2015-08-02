@@ -25,16 +25,20 @@ public class UserDBAdapter implements BaseColumns{
 
     public UserDBAdapter(Context ctx) {
         mDbHelper = com.suh.itboy.auctionsystem.Helper.DatabaseHelper.getInstance(ctx);
+        this.open();
     }
 
-    public UserDBAdapter open() throws SQLException {
+    private void open() throws SQLException {
         this.mDb = this.mDbHelper.getWritableDatabase();
-        return this;
     }
 
 
     public void close() {
+
         this.mDbHelper.close();
+
+        if (this.mDb != null)
+            this.mDb.close();
     }
 
     /**
@@ -50,7 +54,7 @@ public class UserDBAdapter implements BaseColumns{
     /**
      * @return true if deleted, false otherwise
      */
-    public boolean deleteuserUser(long rowId) {
+    public boolean deleteUser(long rowId) {
 
         return this.mDb.delete(DATABASE_TABLE, ROW_ID + "=" + rowId, null) > 0;
     }
@@ -58,7 +62,7 @@ public class UserDBAdapter implements BaseColumns{
     /**
      * @return Cursor over all users
      */
-    public Cursor getAlluserUsers() {
+    public Cursor getAllUsers() {
 
         return this.mDb.query(DATABASE_TABLE, new String[] { ROW_ID,
                 COLUMN_EMAIL, COLUMN_PASS }, null, null, null, null, null);
@@ -68,7 +72,7 @@ public class UserDBAdapter implements BaseColumns{
      * @return Cursor positioned to matching user, if found
      * @throws SQLException if user could not be found/retrieved
      */
-    public Cursor getuserUser(long rowId) throws SQLException {
+    public Cursor getUser(long rowId) throws SQLException {
 
         Cursor mCursor =
 
@@ -83,13 +87,24 @@ public class UserDBAdapter implements BaseColumns{
     /**
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateuserUser(long rowId, String email, String pass){
+    public boolean updateUser(long rowId, String email, String pass){
         ContentValues args = new ContentValues();
         args.put(COLUMN_EMAIL, email);
         args.put(COLUMN_PASS, pass);
 
         return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) >0;
     }
+    
+    public Cursor getByEmailAndPass(String email,String pass){
+        Cursor mCursor = this.mDb.query(
+                DATABASE_TABLE,null,
+                COLUMN_EMAIL+" = ? and "+COLUMN_PASS+" = ?",
+                new String[]{email,pass},null,null,null);
+        if (mCursor != null){
+            mCursor.moveToFirst();
+        }
 
+        return mCursor;
+    }
 
 }

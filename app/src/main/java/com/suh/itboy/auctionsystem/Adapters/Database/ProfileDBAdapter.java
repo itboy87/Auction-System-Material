@@ -22,11 +22,11 @@ public class ProfileDBAdapter implements BaseColumns {
 
     public ProfileDBAdapter(Context ctx) {
         mDbHelper = DatabaseHelper.getInstance(ctx);
+        this.open();
     }
 
-    public ProfileDBAdapter open() throws SQLException {
+    private void open() throws SQLException {
         this.mDb = this.mDbHelper.getWritableDatabase();
-        return this;
     }
 
 
