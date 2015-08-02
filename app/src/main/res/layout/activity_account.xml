@@ -3,6 +3,7 @@
     android:name="com.suh.itboy.auctionsystem.Fragments.AccountActivityFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_account"
     android:background="@color/login_background">
 
     <android.support.v4.view.ViewPager

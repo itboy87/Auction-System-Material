@@ -16,9 +16,10 @@ public class UserModel extends Model {
 
     }
 
-    public UserModel(String email, String pass) {
-        this.email = email;
-        this.pass = pass;
+    public UserModel(long id, String email, String pass) {
+        this.setRowId(id);
+        this.setEmail(email);
+        this.setPass(pass);
     }
 
     public String getEmail() {

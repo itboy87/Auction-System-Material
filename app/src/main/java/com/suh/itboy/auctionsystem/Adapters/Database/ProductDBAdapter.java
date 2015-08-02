@@ -25,19 +25,8 @@ public class ProductDBAdapter implements BaseColumns {
     private SQLiteDatabase mDb;
 
     public ProductDBAdapter(Context ctx) {
-        mDbHelper = DatabaseHelper.getInstance(ctx);
-        this.open();
+        this.mDb = DatabaseHelper.getInstance(ctx);
     }
-
-    private void open() throws SQLException {
-        this.mDb = this.mDbHelper.getWritableDatabase();
-    }
-
-
-    public void close() {
-        this.mDbHelper.close();
-    }
-
 
     public long createProduct(String title, String description, String price){
         ContentValues initialValues = new ContentValues();

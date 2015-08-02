@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
 
 /**
@@ -24,21 +25,7 @@ public class UserDBAdapter implements BaseColumns{
     private SQLiteDatabase mDb;
 
     public UserDBAdapter(Context ctx) {
-        mDbHelper = com.suh.itboy.auctionsystem.Helper.DatabaseHelper.getInstance(ctx);
-        this.open();
-    }
-
-    private void open() throws SQLException {
-        this.mDb = this.mDbHelper.getWritableDatabase();
-    }
-
-
-    public void close() {
-
-        this.mDbHelper.close();
-
-        if (this.mDb != null)
-            this.mDb.close();
+        this.mDb = DatabaseHelper.getInstance(ctx);
     }
 
     /**

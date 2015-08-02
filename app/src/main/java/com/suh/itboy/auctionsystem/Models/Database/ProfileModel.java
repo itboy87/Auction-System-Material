@@ -13,6 +13,16 @@ public class ProfileModel extends Model {
     private String avatar;
     private String gender;
 
+    public ProfileModel() {
+    }
+
+    public ProfileModel(long id,String name, String avatar, String gender) {
+        this.setRowId(id);
+        this.setName(name);
+        this.setAvatar(avatar);
+        this.setGender(gender);
+    }
+
     public String getName() {
         return name;
     }

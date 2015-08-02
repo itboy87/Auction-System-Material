@@ -4,13 +4,13 @@ package com.suh.itboy.auctionsystem.Models.Database;
  * Created by itboy on 8/2/2015.
  */
 public class Model {
-    private int rowId;
+    private long rowId;
 
-    public int getRowId() {
+    public long getRowId() {
         return rowId;
     }
 
-    public void setRowId(int id) {
+    public void setRowId(long id) {
         this.rowId = id;
     }
 }

@@ -1,6 +1,8 @@
 package com.suh.itboy.auctionsystem.Fragments;
 
 
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.suh.itboy.auctionsystem.Activities.AccountActivity;
+import com.suh.itboy.auctionsystem.Activities.ActivityManager;
+import com.suh.itboy.auctionsystem.Adapters.Database.ProfileDBAdapter;
+import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
+import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
+import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
+import com.suh.itboy.auctionsystem.Models.Database.ProfileModel;
+import com.suh.itboy.auctionsystem.Models.Database.UserModel;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
@@ -33,8 +42,8 @@ public class RegisterFragment extends Fragment {
         email = (EditText)view.findViewById(R.id.input_email);
         pass = (EditText)view.findViewById(R.id.input_password);
         name = (EditText)view.findViewById(R.id.input_name);
-        Button signup = (Button)view.findViewById(R.id.btn_signup);
-        signup.setOnClickListener(new View.OnClickListener() {
+        Button sign_up_btn = (Button)view.findViewById(R.id.btn_signup);
+        sign_up_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRegister();
@@ -46,17 +55,44 @@ public class RegisterFragment extends Fragment {
 
 
     private void onRegister(){
-        if (ValidateRegister()){
+        if (!ValidateRegister()){
             return;
         }
 
         AccountActivity.showProgressDialog("Registering...");
-        Register();
+        if(Register()){
+            AccountActivity.showMsg("Registered Successfully!",2000);
+            ActivityManager.startHomeActivity(getActivity());
+        }
+        else{
+            AccountActivity.showMsg("Registration Failed!",2000);
+        }
+        AccountActivity.closeProgressDialog(2000);
     }
 
 
-    private void Register(){
+    private boolean Register(){
+        UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
+        ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
 
+        DatabaseHelper.beginTransaction();
+
+        try{
+            long userId = userDBAdapter.createUser(email.getText().toString(),pass.getText().toString());
+            //TODO: avatar and gender hardcoded
+            long profileId = profileDBAdapter.createProfile(userId,name.getText().toString(),"","male");
+        }
+        catch (SQLException exception){
+            DatabaseHelper.rollbackTransaction();
+            return false;
+        }
+
+        DatabaseHelper.commitTransaction();
+
+        //UserModel userModel = new UserModel(userId,email.getText().toString(),pass.getText().toString());
+
+        UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
+        return  userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString());
     }
     private boolean ValidateRegister(){
         if (!Validate.full_name(name.getText().toString())){

@@ -3,14 +3,12 @@ package com.suh.itboy.auctionsystem.Fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Activities.AccountActivity;
 import com.suh.itboy.auctionsystem.Activities.ActivityManager;
@@ -19,7 +17,6 @@ import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
 import com.suh.itboy.auctionsystem.Models.Database.ProfileModel;
 import com.suh.itboy.auctionsystem.Models.Database.UserModel;
 import com.suh.itboy.auctionsystem.R;
-import com.suh.itboy.auctionsystem.Utils.App;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
 /**
@@ -44,8 +41,8 @@ public class LoginFragment extends Fragment {
         email = (EditText)view.findViewById(R.id.input_email);
         pass = (EditText)view.findViewById(R.id.input_password);
 
-        Button signin = (Button)view.findViewById(R.id.btn_login);
-        signin.setOnClickListener(new View.OnClickListener() {
+        Button sign_in_btn = (Button)view.findViewById(R.id.btn_login);
+        sign_in_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLogin();
@@ -56,19 +53,21 @@ public class LoginFragment extends Fragment {
 
     private void onLogin(){
         if (!ValidateLogin()){
-            showMsg("Invalid Username or Password.");
+            AccountActivity.showMsg("Invalid Username or Password.");
             return;
         }
 
         //Show progress dialog
         AccountActivity.showProgressDialog("Authenticating...");
+
         if (Login(email.getText().toString(),pass.getText().toString())){
             ActivityManager.startHomeActivity(getActivity());
         }
         else {
-            showMsg("Incorrect Email or Password.");
+            AccountActivity.showMsg("Incorrect Email or Password.", 2000);
         }
-        AccountActivity.closeProgressDialog();
+
+        AccountActivity.closeProgressDialog(2000);
 
     }
 
@@ -89,7 +88,7 @@ public class LoginFragment extends Fragment {
         }
 
         UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
-        userSessionHelper.createUserLoginSession(profileModel.getName(),userModel.getEmail());
+        userSessionHelper.createUserLoginSession(profileModel.getName(), userModel.getEmail());
 
         return true;
     }
@@ -106,13 +105,5 @@ public class LoginFragment extends Fragment {
         }
 
         return true;
-    }
-
-    /**
-     * Wrap for App.ShowMsg
-     * @param value
-     */
-    private void showMsg(String value){
-        App.ShowMsg(getView(),value);
     }
 }
