@@ -5,13 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+
+import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
 
 /**
  * Created by itboy on 8/1/2015.
  */
-public class UserDBAdapter {
-    public static final String ROW_ID = "_id";
+public class UserDBAdapter implements BaseColumns{
 
     public static final String DATABASE_TABLE = "user";
 
@@ -19,20 +19,19 @@ public class UserDBAdapter {
     public static final String COLUMN_PASS = "pass";
     public static final String COLUMN_CREATED = "created_at";
 
-    
-    private final Context mCtx;
-    private DatabaseHelper mDbHelper;
+
+    private com.suh.itboy.auctionsystem.Helper.DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
     public UserDBAdapter(Context ctx) {
-        this.mCtx = ctx;
+        mDbHelper = com.suh.itboy.auctionsystem.Helper.DatabaseHelper.getInstance(ctx);
     }
 
     public UserDBAdapter open() throws SQLException {
-        this.mDbHelper = new DatabaseHelper(this.mCtx);
         this.mDb = this.mDbHelper.getWritableDatabase();
         return this;
     }
+
 
     public void close() {
         this.mDbHelper.close();
@@ -90,21 +89,6 @@ public class UserDBAdapter {
         args.put(COLUMN_PASS, pass);
 
         return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) >0;
-    }
-
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        DatabaseHelper(Context context) {
-            super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        }
     }
 
 

@@ -21,7 +21,8 @@ public class SplashActivity extends Activity {
 
         setContentView(R.layout.activity_splash);
 
-        initializeHandler();;
+        initializeHandler();
+
 
     }
     private void initializeHandler(){
