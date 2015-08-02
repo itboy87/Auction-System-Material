@@ -1,7 +1,9 @@
 package com.suh.itboy.auctionsystem.Fragments;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Activities.AccountActivity;
+import com.suh.itboy.auctionsystem.Activities.ActivityManager;
+import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
+import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
+import com.suh.itboy.auctionsystem.Models.Database.ProfileModel;
+import com.suh.itboy.auctionsystem.Models.Database.UserModel;
 import com.suh.itboy.auctionsystem.R;
+import com.suh.itboy.auctionsystem.Utils.App;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
 /**
@@ -48,15 +56,42 @@ public class LoginFragment extends Fragment {
 
     private void onLogin(){
         if (!ValidateLogin()){
+            showMsg("Invalid Username or Password.");
             return;
         }
+
         //Show progress dialog
         AccountActivity.showProgressDialog("Authenticating...");
-        Login();
+        if (Login(email.getText().toString(),pass.getText().toString())){
+            ActivityManager.startHomeActivity(getActivity());
+        }
+        else {
+            showMsg("Incorrect Email or Password.");
+        }
+        AccountActivity.closeProgressDialog();
 
     }
-    private void Login(){
-        
+
+    private boolean Login(String email, String pass){
+        UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
+
+        Cursor userCursor = userDBAdapter.getByEmailAndPass(email, pass);
+
+        UserModel userModel = new UserModel();
+        ProfileModel profileModel = new ProfileModel();
+
+        if (userCursor == null){
+            return false;
+        }
+
+        if (!(userModel.mapFromCursor(userCursor) && profileModel.mapFromCursor(userCursor))){
+            return false;
+        }
+
+        UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
+        userSessionHelper.createUserLoginSession(profileModel.getName(),userModel.getEmail());
+
+        return true;
     }
     private boolean ValidateLogin(){
 
@@ -71,5 +106,13 @@ public class LoginFragment extends Fragment {
         }
 
         return true;
+    }
+
+    /**
+     * Wrap for App.ShowMsg
+     * @param value
+     */
+    private void showMsg(String value){
+        App.ShowMsg(getView(),value);
     }
 }

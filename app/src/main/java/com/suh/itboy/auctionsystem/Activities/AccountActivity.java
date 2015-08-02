@@ -1,6 +1,5 @@
 package com.suh.itboy.auctionsystem.Activities;
 
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;

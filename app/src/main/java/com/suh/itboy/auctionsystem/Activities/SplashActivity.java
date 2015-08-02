@@ -1,7 +1,6 @@
 package com.suh.itboy.auctionsystem.Activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -59,20 +58,11 @@ public class SplashActivity extends Activity {
 
     }
     private void startNextActivity(){
+
         if (isUserLogin){
-            startHomeActivity();
+            ActivityManager.startHomeActivity(this);
         }else{
-            startAccountActivity();
+            ActivityManager.startAccountActivity(this);
         }
-    }
-    private void startAccountActivity() {
-        Intent intent = new Intent(SplashActivity.this, AccountActivity.class);
-        startActivity(intent);
-        finish();
-    }
-    private void startHomeActivity() {
-        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
     }
 }
