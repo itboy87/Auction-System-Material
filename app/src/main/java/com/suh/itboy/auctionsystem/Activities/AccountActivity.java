@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 
-import com.suh.itboy.auctionsystem.Adapters.AccountPagerAdapter;
+import com.suh.itboy.auctionsystem.Adapters.ViewPagerAdapter;
+import com.suh.itboy.auctionsystem.Fragments.Account.LoginFragment;
+import com.suh.itboy.auctionsystem.Fragments.Account.RegisterFragment;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.App;
 
@@ -25,8 +27,10 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
 
         viewPager = (ViewPager)findViewById(R.id.account_viewpager);
-        AccountPagerAdapter accountPagerAdapter = new AccountPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(accountPagerAdapter);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(new LoginFragment(),"Login");
+        viewPagerAdapter.addFragment(new RegisterFragment(),"Register");
+        viewPager.setAdapter(viewPagerAdapter);
 
         rootView = findViewById(R.id.activity_account);
 

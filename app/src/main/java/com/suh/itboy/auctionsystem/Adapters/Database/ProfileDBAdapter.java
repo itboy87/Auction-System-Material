@@ -75,8 +75,18 @@ public class ProfileDBAdapter implements BaseColumns {
 
         Cursor mCursor =
 
-                this.mDb.query(true, DATABASE_TABLE, new String[]{ROW_ID, COLUMN_NAME,
-                        COLUMN_AVATAR, COLUMN_GENDER}, ROW_ID + "=" + rowId, null, null, null, null, null);
+                this.mDb.query(true, DATABASE_TABLE, null, ROW_ID + "=" + rowId, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public Cursor getByUserId(long userId) throws SQLException {
+
+        Cursor mCursor =
+
+                this.mDb.query(true, DATABASE_TABLE, null, COLUMN_USER_ID + "=" + userId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }

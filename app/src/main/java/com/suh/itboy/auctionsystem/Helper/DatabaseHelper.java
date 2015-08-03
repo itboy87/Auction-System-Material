@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_USER = "create table "
             + UserDBAdapter.DATABASE_TABLE +" (_id integer primary key autoincrement, "
-            + UserDBAdapter.COLUMN_EMAIL+ " TEXT,"
+            + UserDBAdapter.COLUMN_EMAIL+ " TEXT collate nocase,"
             + UserDBAdapter.COLUMN_PASS+ " TEXT,"
             + UserDBAdapter.COLUMN_CREATED+ " DATETIME DEFAULT CURRENT_TIMESTAMP" + ");";
 
@@ -28,14 +28,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ProfileDBAdapter.DATABASE_TABLE+" (_id integer primary key autoincrement, "
             + ProfileDBAdapter.COLUMN_USER_ID+" integer REFERENCES "
                 + UserDBAdapter.DATABASE_TABLE+","
-            + ProfileDBAdapter.COLUMN_NAME+" TEXT,"
-            + ProfileDBAdapter.COLUMN_AVATAR+" TEXT" + ");";
+            + ProfileDBAdapter.COLUMN_NAME+" TEXT collate nocase,"
+            + ProfileDBAdapter.COLUMN_AVATAR+" TEXT collate nocase,"
+            + ProfileDBAdapter.COLUMN_GENDER+" TEXT collate nocase"+ ");";
 
     private static final String CREATE_TABLE_PRODUCT = "create table "
             + ProductDBAdapter.DATABASE_TABLE+" (_id integer primary key autoincrement, "
-            + ProductDBAdapter.COLUMN_TITLE+" TEXT,"
-            + ProductDBAdapter.COLUMN_DESCRIPTION+" TEXT,"
-            + ProductDBAdapter.COLUMN_PRICE+" INT"
+            + ProductDBAdapter.COLUMN_TITLE+" TEXT collate nocase,"
+            + ProductDBAdapter.COLUMN_DESCRIPTION+" TEXT collate nocase,"
+            + ProductDBAdapter.COLUMN_PRICE+" INT,"
             + ProductDBAdapter.COLUMN_CREATED+" INT" + ");";
 
     public static synchronized SQLiteDatabase getInstance(Context context) {
@@ -86,12 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sInstance.beginTransaction();
     }
 
-    public static void rollbackTransaction(){
+    public static void endTransaction(){
             sInstance.endTransaction();
     }
 
-    public static void commitTransaction(){
+    public static void setTransactionSuccessful(){
         sInstance.setTransactionSuccessful();
-        sInstance.endTransaction();
     }
 }

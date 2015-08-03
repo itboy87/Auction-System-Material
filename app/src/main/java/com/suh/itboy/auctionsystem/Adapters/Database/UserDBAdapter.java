@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
@@ -94,4 +95,23 @@ public class UserDBAdapter implements BaseColumns{
         return mCursor;
     }
 
+    public Cursor getByEmail(String email) {
+
+        Cursor mCursor =
+
+                this.mDb.query(true, DATABASE_TABLE, null, COLUMN_EMAIL + "= ?", new String[]{email}, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+
+    public boolean isUserExists(String email){
+        Cursor c = this.getByEmail(email);
+        if (c == null || c.getCount() <1)
+            return false;
+
+        return true;
+    }
 }

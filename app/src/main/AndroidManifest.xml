@@ -22,7 +22,7 @@
             android:theme="@style/AccountTheme" >
         </activity>
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name=".Activities.DashboardActivity"
             android:label="@string/title_activity_home" >
         </activity>
     </application>

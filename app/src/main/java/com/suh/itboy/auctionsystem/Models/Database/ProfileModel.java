@@ -48,7 +48,7 @@ public class ProfileModel extends Model {
     }
 
     public boolean mapFromCursor(Cursor c){
-        if (c != null){
+        if (c == null){
             return false;
         }
         if (c.moveToFirst()){

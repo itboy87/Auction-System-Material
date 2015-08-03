@@ -1,9 +1,10 @@
-package com.suh.itboy.auctionsystem.Fragments;
+package com.suh.itboy.auctionsystem.Fragments.Account;
 
 
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,38 +62,55 @@ public class RegisterFragment extends Fragment {
 
         AccountActivity.showProgressDialog("Registering...");
         if(Register()){
-            AccountActivity.showMsg("Registered Successfully!",2000);
+            AccountActivity.closeProgressDialog();
             ActivityManager.startHomeActivity(getActivity());
         }
-        else{
-            AccountActivity.showMsg("Registration Failed!",2000);
-        }
-        AccountActivity.closeProgressDialog(2000);
+        AccountActivity.closeProgressDialog(900);
     }
 
 
     private boolean Register(){
         UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
         ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
-
-        DatabaseHelper.beginTransaction();
-
-        try{
-            long userId = userDBAdapter.createUser(email.getText().toString(),pass.getText().toString());
-            //TODO: avatar and gender hardcoded
-            long profileId = profileDBAdapter.createProfile(userId,name.getText().toString(),"","male");
-        }
-        catch (SQLException exception){
-            DatabaseHelper.rollbackTransaction();
+        if (userDBAdapter.isUserExists(email.getText().toString())){
+            AccountActivity.showMsg("User Already Exists!",1000);
             return false;
         }
+        DatabaseHelper.beginTransaction();
+        long profileId = 0;
+        long userId = 0;
+        try{
+            userId = userDBAdapter.createUser(email.getText().toString(),pass.getText().toString());
+            //TODO: avatar and gender hardcoded
+            profileId = profileDBAdapter.createProfile(userId, name.getText().toString(), "", "male");
 
-        DatabaseHelper.commitTransaction();
+            if (profileId >= 0){
+                DatabaseHelper.setTransactionSuccessful();
+            }
+        }
+        catch (SQLException exception){
+            DatabaseHelper.endTransaction();
+            AccountActivity.showMsg("Registration Error!", 1000);
+            return false;
+        }
+        finally {
+            DatabaseHelper.endTransaction();
+        }
 
+        if (profileId < 1){
+            AccountActivity.showMsg("User Profile Error!",1000);
+            return false;
+        }
         //UserModel userModel = new UserModel(userId,email.getText().toString(),pass.getText().toString());
 
         UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
-        return  userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString());
+        if(!userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString())){
+            AccountActivity.showMsg("User Session Error Please restart app!",1000);
+            return false;
+        }
+
+        return true;
+
     }
     private boolean ValidateRegister(){
         if (!Validate.full_name(name.getText().toString())){

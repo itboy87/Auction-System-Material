@@ -13,8 +13,9 @@ public class ActivityManager {
         parentActivity.finish();
     }
 
-    public static void startHomeActivity(Context context){
-        startActivity(context, HomeActivity.class);
+    public static void startHomeActivity(Activity parentActivity){
+        startActivity(parentActivity, DashboardActivity.class);
+        parentActivity.finish();
     }
 
     private static void startActivity(Context context, Class<? extends Activity> activityClass){

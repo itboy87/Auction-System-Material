@@ -1,4 +1,4 @@
-package com.suh.itboy.auctionsystem.Fragments;
+package com.suh.itboy.auctionsystem.Fragments.Account;
 
 
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.suh.itboy.auctionsystem.Activities.AccountActivity;
 import com.suh.itboy.auctionsystem.Activities.ActivityManager;
+import com.suh.itboy.auctionsystem.Adapters.Database.ProfileDBAdapter;
 import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
 import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
 import com.suh.itboy.auctionsystem.Models.Database.ProfileModel;
@@ -61,29 +62,35 @@ public class LoginFragment extends Fragment {
         AccountActivity.showProgressDialog("Authenticating...");
 
         if (Login(email.getText().toString(),pass.getText().toString())){
+            AccountActivity.closeProgressDialog();
             ActivityManager.startHomeActivity(getActivity());
         }
         else {
-            AccountActivity.showMsg("Incorrect Email or Password.", 2000);
+            AccountActivity.showMsg("Incorrect Email or Password.", 1000);
         }
 
-        AccountActivity.closeProgressDialog(2000);
+        AccountActivity.closeProgressDialog(1000);
 
     }
 
     private boolean Login(String email, String pass){
         UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
+        ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
 
         Cursor userCursor = userDBAdapter.getByEmailAndPass(email, pass);
-
-        UserModel userModel = new UserModel();
-        ProfileModel profileModel = new ProfileModel();
-
         if (userCursor == null){
             return false;
         }
 
-        if (!(userModel.mapFromCursor(userCursor) && profileModel.mapFromCursor(userCursor))){
+        UserModel userModel = new UserModel();
+        ProfileModel profileModel = new ProfileModel();
+
+        if (!(userModel.mapFromCursor(userCursor))){
+            return false;
+        }
+        Cursor profileCursor = profileDBAdapter.getByUserId(userModel.getRowId());
+
+        if (!(profileModel.mapFromCursor(profileCursor))){
             return false;
         }
 

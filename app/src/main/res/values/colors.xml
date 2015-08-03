@@ -4,10 +4,14 @@
     <color name="login_logo_background">#3c5068</color>
     <color name="login_button">#39daf7</color>
 
-    <color name="primary">@color/grey_primary</color>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="accent">#E91E63</color>
+
+    <!--<color name="primary">@color/grey_primary</color>
     <color name="primary_dark">@color/grey_primary_dark</color>
     <color name="primary_light">@color/grey_primary_light</color>
-    <color name="accent">@color/grey_accent</color>
+    <color name="accent">@color/grey_accent</color>-->
     <color name="primary_text">@color/grey_primary_text</color>
     <color name="secondary_text">@color/grey_secondary_text</color>
     <color name="icons">@color/grey_icons</color>
