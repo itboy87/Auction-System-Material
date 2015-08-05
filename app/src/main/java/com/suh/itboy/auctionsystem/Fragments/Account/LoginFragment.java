@@ -65,9 +65,6 @@ public class LoginFragment extends Fragment {
             AccountActivity.closeProgressDialog();
             ActivityManager.startHomeActivity(getActivity());
         }
-        else {
-            AccountActivity.showMsg("Incorrect Email or Password.", 1000);
-        }
 
         AccountActivity.closeProgressDialog(1000);
 
@@ -78,7 +75,8 @@ public class LoginFragment extends Fragment {
         ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
 
         Cursor userCursor = userDBAdapter.getByEmailAndPass(email, pass);
-        if (userCursor == null){
+        if (userCursor == null || userCursor.getCount() < 1){
+            AccountActivity.showMsg("Email does not exists create new account.", 1000);
             return false;
         }
 
@@ -86,11 +84,13 @@ public class LoginFragment extends Fragment {
         ProfileModel profileModel = new ProfileModel();
 
         if (!(userModel.mapFromCursor(userCursor))){
+            AccountActivity.showMsg("Unable to map user data.", 1000);
             return false;
         }
         Cursor profileCursor = profileDBAdapter.getByUserId(userModel.getRowId());
 
         if (!(profileModel.mapFromCursor(profileCursor))){
+            AccountActivity.showMsg("Unable to map profile data.", 1000);
             return false;
         }
 

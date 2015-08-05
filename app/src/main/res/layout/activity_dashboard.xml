@@ -15,11 +15,14 @@
 
             <include
                 android:id="@+id/tool_bar"
-                layout="@layout/tool_bar" />
+                layout="@layout/tool_bar"
+                />
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:theme="@style/Theme.AppCompat"
+                app:tabMode="scrollable"
                 />
         </android.support.design.widget.AppBarLayout>
 
