@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment {
 
         if (Login(email.getText().toString(),pass.getText().toString())){
             AccountActivity.closeProgressDialog();
-            ActivityManager.startHomeActivity(getActivity());
+            ActivityManager.startDashboardActivity(getActivity());
         }
 
         AccountActivity.closeProgressDialog(1000);

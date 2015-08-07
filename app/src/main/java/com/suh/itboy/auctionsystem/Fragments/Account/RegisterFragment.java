@@ -1,10 +1,8 @@
 package com.suh.itboy.auctionsystem.Fragments.Account;
 
 
-import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +16,6 @@ import com.suh.itboy.auctionsystem.Adapters.Database.ProfileDBAdapter;
 import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
-import com.suh.itboy.auctionsystem.Models.Database.ProfileModel;
-import com.suh.itboy.auctionsystem.Models.Database.UserModel;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
@@ -63,7 +59,7 @@ public class RegisterFragment extends Fragment {
         AccountActivity.showProgressDialog("Registering...");
         if(Register()){
             AccountActivity.closeProgressDialog();
-            ActivityManager.startHomeActivity(getActivity());
+            ActivityManager.startDashboardActivity(getActivity());
         }
         AccountActivity.closeProgressDialog(900);
     }

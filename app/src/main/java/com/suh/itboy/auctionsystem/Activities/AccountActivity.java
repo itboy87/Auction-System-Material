@@ -26,7 +26,7 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         viewPager = (ViewPager)findViewById(R.id.account_viewpager);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),this);
         viewPagerAdapter.addFragment(new LoginFragment(),"Login");
         viewPagerAdapter.addFragment(new RegisterFragment(),"Register");
         viewPager.setAdapter(viewPagerAdapter);

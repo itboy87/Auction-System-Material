@@ -13,7 +13,7 @@ public class ActivityManager {
         parentActivity.finish();
     }
 
-    public static void startHomeActivity(Activity parentActivity){
+    public static void startDashboardActivity(Activity parentActivity){
         startActivity(parentActivity, DashboardActivity.class);
         parentActivity.finish();
     }

@@ -60,7 +60,7 @@ public class SplashActivity extends Activity {
     private void startNextActivity(){
 
         if (isUserLogin){
-            ActivityManager.startHomeActivity(this);
+            ActivityManager.startDashboardActivity(this);
         }else{
             ActivityManager.startAccountActivity(this);
         }
