@@ -12,21 +12,22 @@ import java.util.regex.Pattern;
  * Created by itboy on 8/1/2015.
  */
 public class Validate {
-    public static boolean isEmpty(String $value){
+    public static boolean isEmpty(String $value) {
 
         //String.isEmpty() throws exception on null
         if ($value == null)
             return false;
         return $value.trim().isEmpty();
     }
-    public static boolean email(String email){
+
+    public static boolean email(String email) {
         if (!isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())
             return true;
         else
             return false;
     }
 
-    public static boolean password(String pass,int min, int max){
+    public static boolean password(String pass, int min, int max) {
         if (isEmpty(pass))
             return false;
 
@@ -37,7 +38,7 @@ public class Validate {
                 return false;
         }
 
-        if (max != 0){
+        if (max != 0) {
             if (length > max)
                 return false;
         }
@@ -45,9 +46,9 @@ public class Validate {
         return true;
     }
 
-    public static boolean full_name(String name){
+    public static boolean full_name(String name) {
         String regx = "^[\\p{L} .'-]+$";
-        Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(name);
 
         return matcher.find();

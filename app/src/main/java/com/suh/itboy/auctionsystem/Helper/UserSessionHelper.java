@@ -7,18 +7,16 @@ import android.content.SharedPreferences;
  * Created by itboy on 8/2/2015.
  */
 public class UserSessionHelper {
-    private static UserSessionHelper sInstance;
-
     private static final String PREF_NAME = "auction_pref";
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
-
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_IS_USER_LOGIN = "isUserLogin";
+    private static UserSessionHelper sInstance;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     private UserSessionHelper(Context context) {
-        preferences = context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
@@ -34,23 +32,23 @@ public class UserSessionHelper {
     }
 
     //Wrap for getInstance can be used either
-    public static UserSessionHelper initialize(Context context){
+    public static UserSessionHelper initialize(Context context) {
         return getInstance(context);
     }
 
-    public boolean createUserLoginSession(String name, String email){
-        editor.putString(KEY_NAME,name);
-        editor.putString(KEY_EMAIL,email);
-        editor.putBoolean(KEY_IS_USER_LOGIN,true);
+    public boolean createUserLoginSession(String name, String email) {
+        editor.putString(KEY_NAME, name);
+        editor.putString(KEY_EMAIL, email);
+        editor.putBoolean(KEY_IS_USER_LOGIN, true);
         return editor.commit();
     }
 
-    public boolean logOutUser(){
+    public boolean logOutUser() {
         editor.clear();
         return editor.commit();
     }
 
-    public boolean isUserLogin(){
+    public boolean isUserLogin() {
         return preferences.getBoolean(KEY_IS_USER_LOGIN, false);
     }
 }

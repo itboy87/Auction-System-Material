@@ -36,10 +36,10 @@ public class RegisterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
-        email = (EditText)view.findViewById(R.id.input_email);
-        pass = (EditText)view.findViewById(R.id.input_password);
-        name = (EditText)view.findViewById(R.id.input_name);
-        Button sign_up_btn = (Button)view.findViewById(R.id.btn_signup);
+        email = (EditText) view.findViewById(R.id.input_email);
+        pass = (EditText) view.findViewById(R.id.input_password);
+        name = (EditText) view.findViewById(R.id.input_name);
+        Button sign_up_btn = (Button) view.findViewById(R.id.btn_signup);
         sign_up_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,13 +51,13 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private void onRegister(){
-        if (!ValidateRegister()){
+    private void onRegister() {
+        if (!ValidateRegister()) {
             return;
         }
 
         AccountActivity.showProgressDialog("Registering...");
-        if(Register()){
+        if (Register()) {
             AccountActivity.closeProgressDialog();
             ActivityManager.startDashboardActivity(getActivity());
         }
@@ -65,56 +65,55 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private boolean Register(){
+    private boolean Register() {
         UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
         ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
-        if (userDBAdapter.isUserExists(email.getText().toString())){
-            AccountActivity.showMsg("User Already Exists!",1000);
+        if (userDBAdapter.isUserExists(email.getText().toString())) {
+            AccountActivity.showMsg("User Already Exists!", 1000);
             return false;
         }
         DatabaseHelper.beginTransaction();
         long profileId = 0;
         long userId = 0;
-        try{
-            userId = userDBAdapter.createUser(email.getText().toString(),pass.getText().toString());
+        try {
+            userId = userDBAdapter.createUser(email.getText().toString(), pass.getText().toString());
             //TODO: avatar and gender hardcoded
             profileId = profileDBAdapter.createProfile(userId, name.getText().toString(), "", "male");
 
-            if (profileId >= 0){
+            if (profileId >= 0) {
                 DatabaseHelper.setTransactionSuccessful();
             }
-        }
-        catch (SQLException exception){
+        } catch (SQLException exception) {
             DatabaseHelper.endTransaction();
             AccountActivity.showMsg("Registration Error!", 1000);
             return false;
-        }
-        finally {
+        } finally {
             DatabaseHelper.endTransaction();
         }
 
-        if (profileId < 1){
-            AccountActivity.showMsg("User Profile Error!",1000);
+        if (profileId < 1) {
+            AccountActivity.showMsg("User Profile Error!", 1000);
             return false;
         }
         //UserModel userModel = new UserModel(userId,email.getText().toString(),pass.getText().toString());
 
         UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
-        if(!userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString())){
-            AccountActivity.showMsg("User Session Error Please restart app!",1000);
+        if (!userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString())) {
+            AccountActivity.showMsg("User Session Error Please restart app!", 1000);
             return false;
         }
 
         return true;
 
     }
-    private boolean ValidateRegister(){
-        if (!Validate.full_name(name.getText().toString())){
+
+    private boolean ValidateRegister() {
+        if (!Validate.full_name(name.getText().toString())) {
             name.setError("Invalid Name letters and space allowed.");
             return false;
         }
 
-        if (!Validate.email(email.getText().toString())){
+        if (!Validate.email(email.getText().toString())) {
             email.setError("Invalid Email!");
             return false;
         }

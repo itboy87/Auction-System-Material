@@ -16,7 +16,7 @@ public class ProfileModel extends Model {
     public ProfileModel() {
     }
 
-    public ProfileModel(long id,String name, String avatar, String gender) {
+    public ProfileModel(long id, String name, String avatar, String gender) {
         this.setRowId(id);
         this.setName(name);
         this.setAvatar(avatar);
@@ -47,11 +47,11 @@ public class ProfileModel extends Model {
         this.gender = gender;
     }
 
-    public boolean mapFromCursor(Cursor c){
-        if (c == null){
+    public boolean mapFromCursor(Cursor c) {
+        if (c == null) {
             return false;
         }
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             this.setName(c.getString(c.getColumnIndex(ProfileDBAdapter.COLUMN_NAME)));
             this.setAvatar(c.getString(c.getColumnIndex(ProfileDBAdapter.COLUMN_AVATAR)));
             this.setGender(c.getString(c.getColumnIndex(ProfileDBAdapter.COLUMN_GENDER)));

@@ -1,6 +1,5 @@
 package com.suh.itboy.auctionsystem.Adapters;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +27,7 @@ public class ImageSliderAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
-        args.putInt(KEY_SLIDE,images[position]);
+        args.putInt(KEY_SLIDE, images[position]);
         ImageSliderFragment imageSliderFragment = new ImageSliderFragment();
         imageSliderFragment.setArguments(args);
         return imageSliderFragment;

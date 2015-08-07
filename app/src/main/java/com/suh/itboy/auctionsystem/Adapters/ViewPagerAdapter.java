@@ -4,18 +4,13 @@ package com.suh.itboy.auctionsystem.Adapters;
 import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.suh.itboy.auctionsystem.R;
@@ -34,7 +29,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private Context context;
 
-    public ViewPagerAdapter(FragmentManager fm,Context context) {
+    public ViewPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
@@ -49,14 +44,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.size();
     }
 
-    public void addFragment(Fragment fragment,String title, @DrawableRes int icon, @ColorRes int color){
+    public void addFragment(Fragment fragment, String title, @DrawableRes int icon, @ColorRes int color) {
         this.mFragmentList.add(fragment);
         this.mTitleList.add(title);
         this.mIconList.add(icon);
         this.mColorList.add(color);
     }
 
-    public void addFragment(Fragment fragment,String title){
+    public void addFragment(Fragment fragment, String title) {
         this.mFragmentList.add(fragment);
         this.mTitleList.add(title);
     }
@@ -67,8 +62,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return mTitleList.get(position);
     }
 
-    public View getTabView(int position){
-        View view = LayoutInflater.from(this.context).inflate(R.layout.tab_layout,null);
+    public View getTabView(int position) {
+        View view = LayoutInflater.from(this.context).inflate(R.layout.tab_layout, null);
         TextView title = (TextView) view.findViewById(R.id.title);
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
         ViewGroup layout = (ViewGroup) view.findViewById(R.id.layout);

@@ -57,11 +57,12 @@ public class SplashActivity extends Activity {
         });
 
     }
-    private void startNextActivity(){
 
-        if (isUserLogin){
+    private void startNextActivity() {
+
+        if (isUserLogin) {
             ActivityManager.startDashboardActivity(this);
-        }else{
+        } else {
             ActivityManager.startAccountActivity(this);
         }
     }

@@ -35,7 +35,7 @@ public class ProfileDBAdapter implements BaseColumns {
      */
     public long createProfile(long user_id, String name, String avatar, String gender) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(COLUMN_USER_ID,user_id);
+        initialValues.put(COLUMN_USER_ID, user_id);
         initialValues.put(COLUMN_NAME, name);
         initialValues.put(COLUMN_AVATAR, avatar);
         initialValues.put(COLUMN_GENDER, gender);

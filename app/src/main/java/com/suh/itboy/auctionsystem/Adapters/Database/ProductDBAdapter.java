@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
@@ -28,7 +27,7 @@ public class ProductDBAdapter implements BaseColumns {
         this.mDb = DatabaseHelper.getInstance(ctx);
     }
 
-    public long createProduct(String title, String description, String price){
+    public long createProduct(String title, String description, String price) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_TITLE, title);
         initialValues.put(COLUMN_DESCRIPTION, description);
@@ -54,12 +53,13 @@ public class ProductDBAdapter implements BaseColumns {
      */
     public Cursor getAllProducts() {
 
-        return this.mDb.query(DATABASE_TABLE, new String[] { ROW_ID,
-                COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_PRICE }, null, null, null, null, null);
+        return this.mDb.query(DATABASE_TABLE, new String[]{ROW_ID,
+                COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_PRICE}, null, null, null, null, null);
     }
 
     /**
      * Return a Cursor positioned at the product that matches the given rowId
+     *
      * @param rowId
      * @return Cursor positioned to matching product, if found
      * @throws SQLException if product could not be found/retrieved
@@ -68,8 +68,8 @@ public class ProductDBAdapter implements BaseColumns {
 
         Cursor mCursor =
 
-        this.mDb.query(true, DATABASE_TABLE, new String[] { ROW_ID, COLUMN_TITLE,
-                COLUMN_DESCRIPTION, COLUMN_PRICE}, ROW_ID + "=" + rowId, null, null, null, null, null);
+                this.mDb.query(true, DATABASE_TABLE, new String[]{ROW_ID, COLUMN_TITLE,
+                        COLUMN_DESCRIPTION, COLUMN_PRICE}, ROW_ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -85,13 +85,13 @@ public class ProductDBAdapter implements BaseColumns {
      * @param price
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateProduct(long rowId, String title, String description, String price){
+    public boolean updateProduct(long rowId, String title, String description, String price) {
         ContentValues args = new ContentValues();
         args.put(COLUMN_TITLE, title);
         args.put(COLUMN_DESCRIPTION, description);
         args.put(COLUMN_PRICE, price);
 
-        return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) >0;
+        return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) > 0;
     }
 
 }

@@ -8,18 +8,18 @@ import android.content.Intent;
  * Created by itboy on 8/2/2015.
  */
 public class ActivityManager {
-    public static void startAccountActivity(Activity parentActivity){
-        startActivity(parentActivity,AccountActivity.class);
+    public static void startAccountActivity(Activity parentActivity) {
+        startActivity(parentActivity, AccountActivity.class);
         parentActivity.finish();
     }
 
-    public static void startDashboardActivity(Activity parentActivity){
+    public static void startDashboardActivity(Activity parentActivity) {
         startActivity(parentActivity, DashboardActivity.class);
         parentActivity.finish();
     }
 
-    private static void startActivity(Context context, Class<? extends Activity> activityClass){
-        Intent intent = new Intent(context,activityClass );
+    private static void startActivity(Context context, Class<? extends Activity> activityClass) {
+        Intent intent = new Intent(context, activityClass);
         context.startActivity(intent);
     }
 }

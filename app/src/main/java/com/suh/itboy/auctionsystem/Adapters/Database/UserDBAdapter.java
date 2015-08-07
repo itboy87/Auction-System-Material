@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
 
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
@@ -13,7 +12,7 @@ import com.suh.itboy.auctionsystem.Interfaces.BaseColumns;
 /**
  * Created by itboy on 8/1/2015.
  */
-public class UserDBAdapter implements BaseColumns{
+public class UserDBAdapter implements BaseColumns {
 
     public static final String DATABASE_TABLE = "user";
 
@@ -32,7 +31,7 @@ public class UserDBAdapter implements BaseColumns{
     /**
      * @return rowId or -1 if failed
      */
-    public long createUser(String email, String pass){
+    public long createUser(String email, String pass) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_EMAIL, email);
         initialValues.put(COLUMN_PASS, pass);
@@ -52,8 +51,8 @@ public class UserDBAdapter implements BaseColumns{
      */
     public Cursor getAllUsers() {
 
-        return this.mDb.query(DATABASE_TABLE, new String[] { ROW_ID,
-                COLUMN_EMAIL, COLUMN_PASS }, null, null, null, null, null);
+        return this.mDb.query(DATABASE_TABLE, new String[]{ROW_ID,
+                COLUMN_EMAIL, COLUMN_PASS}, null, null, null, null, null);
     }
 
     /**
@@ -64,7 +63,7 @@ public class UserDBAdapter implements BaseColumns{
 
         Cursor mCursor =
 
-                this.mDb.query(true, DATABASE_TABLE, new String[] { ROW_ID, COLUMN_EMAIL,
+                this.mDb.query(true, DATABASE_TABLE, new String[]{ROW_ID, COLUMN_EMAIL,
                         COLUMN_PASS}, ROW_ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -75,20 +74,20 @@ public class UserDBAdapter implements BaseColumns{
     /**
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateUser(long rowId, String email, String pass){
+    public boolean updateUser(long rowId, String email, String pass) {
         ContentValues args = new ContentValues();
         args.put(COLUMN_EMAIL, email);
         args.put(COLUMN_PASS, pass);
 
-        return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) >0;
+        return this.mDb.update(DATABASE_TABLE, args, ROW_ID + "=" + rowId, null) > 0;
     }
-    
-    public Cursor getByEmailAndPass(String email,String pass){
+
+    public Cursor getByEmailAndPass(String email, String pass) {
         Cursor mCursor = this.mDb.query(
-                DATABASE_TABLE,null,
-                COLUMN_EMAIL+" = ? and "+COLUMN_PASS+" = ?",
-                new String[]{email,pass},null,null,null);
-        if (mCursor != null){
+                DATABASE_TABLE, null,
+                COLUMN_EMAIL + " = ? and " + COLUMN_PASS + " = ?",
+                new String[]{email, pass}, null, null, null);
+        if (mCursor != null) {
             mCursor.moveToFirst();
         }
 
@@ -107,9 +106,9 @@ public class UserDBAdapter implements BaseColumns{
     }
 
 
-    public boolean isUserExists(String email){
+    public boolean isUserExists(String email) {
         Cursor c = this.getByEmail(email);
-        if (c == null || c.getCount() <1)
+        if (c == null || c.getCount() < 1)
             return false;
 
         return true;

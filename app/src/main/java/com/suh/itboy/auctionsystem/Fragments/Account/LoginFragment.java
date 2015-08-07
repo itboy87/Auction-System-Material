@@ -39,10 +39,10 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        email = (EditText)view.findViewById(R.id.input_email);
-        pass = (EditText)view.findViewById(R.id.input_password);
+        email = (EditText) view.findViewById(R.id.input_email);
+        pass = (EditText) view.findViewById(R.id.input_password);
 
-        Button sign_in_btn = (Button)view.findViewById(R.id.btn_login);
+        Button sign_in_btn = (Button) view.findViewById(R.id.btn_login);
         sign_in_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +52,8 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void onLogin(){
-        if (!ValidateLogin()){
+    private void onLogin() {
+        if (!ValidateLogin()) {
             AccountActivity.showMsg("Invalid Username or Password.");
             return;
         }
@@ -61,7 +61,7 @@ public class LoginFragment extends Fragment {
         //Show progress dialog
         AccountActivity.showProgressDialog("Authenticating...");
 
-        if (Login(email.getText().toString(),pass.getText().toString())){
+        if (Login(email.getText().toString(), pass.getText().toString())) {
             AccountActivity.closeProgressDialog();
             ActivityManager.startDashboardActivity(getActivity());
         }
@@ -70,12 +70,12 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private boolean Login(String email, String pass){
+    private boolean Login(String email, String pass) {
         UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
         ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
 
         Cursor userCursor = userDBAdapter.getByEmailAndPass(email, pass);
-        if (userCursor == null || userCursor.getCount() < 1){
+        if (userCursor == null || userCursor.getCount() < 1) {
             AccountActivity.showMsg("Email does not exists create new account.", 1000);
             return false;
         }
@@ -83,13 +83,13 @@ public class LoginFragment extends Fragment {
         UserModel userModel = new UserModel();
         ProfileModel profileModel = new ProfileModel();
 
-        if (!(userModel.mapFromCursor(userCursor))){
+        if (!(userModel.mapFromCursor(userCursor))) {
             AccountActivity.showMsg("Unable to map user data.", 1000);
             return false;
         }
         Cursor profileCursor = profileDBAdapter.getByUserId(userModel.getRowId());
 
-        if (!(profileModel.mapFromCursor(profileCursor))){
+        if (!(profileModel.mapFromCursor(profileCursor))) {
             AccountActivity.showMsg("Unable to map profile data.", 1000);
             return false;
         }
@@ -99,9 +99,10 @@ public class LoginFragment extends Fragment {
 
         return true;
     }
-    private boolean ValidateLogin(){
 
-        if (!Validate.email(email.getText().toString())){
+    private boolean ValidateLogin() {
+
+        if (!Validate.email(email.getText().toString())) {
             email.setError("Invalid Email!");
             return false;
         }
