@@ -4,7 +4,7 @@
 
     </style>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:homeAsUpIndicator">@drawable/ic_action_menu</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_menu</item>
         <item name="colorPrimary">@color/my_primary</item>
 
         <!--   darker variant for the status bar and contextual app bars -->

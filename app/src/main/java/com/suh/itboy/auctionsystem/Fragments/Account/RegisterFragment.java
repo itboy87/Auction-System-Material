@@ -14,6 +14,7 @@ import com.suh.itboy.auctionsystem.Activities.AccountActivity;
 import com.suh.itboy.auctionsystem.Activities.ActivityManager;
 import com.suh.itboy.auctionsystem.Adapters.Database.ProfileDBAdapter;
 import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
+import com.suh.itboy.auctionsystem.Adapters.ViewPagerAdapter;
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
 import com.suh.itboy.auctionsystem.R;
@@ -47,6 +48,10 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+/*        Bundle bundle = getArguments();
+        if ( bundle != null && bundle.containsKey("email")){
+            this.setEmail(bundle.getString("email"));
+        }*/
         return view;
     }
 
@@ -69,7 +74,13 @@ public class RegisterFragment extends Fragment {
         UserDBAdapter userDBAdapter = new UserDBAdapter(getActivity());
         ProfileDBAdapter profileDBAdapter = new ProfileDBAdapter(getActivity());
         if (userDBAdapter.isUserExists(email.getText().toString())) {
-            AccountActivity.showMsg("User Already Exists!", 1000);
+            AccountActivity.showMsg("User Already Exists!", 1000, "Login", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewPagerAdapter.SET_EMAIL = true;
+                    ((AccountActivity) getActivity()).ChangeToSignIn(v);
+                }
+            });
             return false;
         }
         DatabaseHelper.beginTransaction();
@@ -85,21 +96,21 @@ public class RegisterFragment extends Fragment {
             }
         } catch (SQLException exception) {
             DatabaseHelper.endTransaction();
-            AccountActivity.showMsg("Registration Error!", 1000);
+            AccountActivity.showMsg("Registration Error!", 1000, null, null);
             return false;
         } finally {
             DatabaseHelper.endTransaction();
         }
 
         if (profileId < 1) {
-            AccountActivity.showMsg("User Profile Error!", 1000);
+            AccountActivity.showMsg("User Profile Error!", 1000, null, null);
             return false;
         }
         //UserModel userModel = new UserModel(userId,email.getText().toString(),pass.getText().toString());
 
         UserSessionHelper userSessionHelper = UserSessionHelper.getInstance(getActivity());
         if (!userSessionHelper.createUserLoginSession(name.getText().toString(), email.getText().toString())) {
-            AccountActivity.showMsg("User Session Error Please restart app!", 1000);
+            AccountActivity.showMsg("User Session Error Please restart app!", 1000, null, null);
             return false;
         }
 
@@ -124,5 +135,13 @@ public class RegisterFragment extends Fragment {
         }
 
         return true;
+    }
+
+    public String getEmail() {
+        return this.email.getText().toString();
+    }
+
+    public void setEmail(String email) {
+        this.email.setText(email);
     }
 }

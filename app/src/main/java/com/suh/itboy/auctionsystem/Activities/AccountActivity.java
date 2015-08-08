@@ -42,15 +42,15 @@ public class AccountActivity extends AppCompatActivity {
     /**
      * Wrap for App.ShowMsg
      */
-    public static void showMsg(String value) {
-        App.ShowMsg(rootView, value);
+    public static void showMsg(String value, String actionString, View.OnClickListener clickListener) {
+        App.ShowMsg(rootView, value, actionString, clickListener);
     }
 
-    public static void showMsg(final String value, long delay) {
+    public static void showMsg(final String value, long delay, final String actionString, final View.OnClickListener clickListener) {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                App.ShowMsg(rootView, value);
+                App.ShowMsg(rootView, value, actionString, clickListener);
             }
         };
         new Timer().schedule(timerTask, delay);
@@ -65,7 +65,7 @@ public class AccountActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(new LoginFragment(), "Login");
         viewPagerAdapter.addFragment(new RegisterFragment(), "Register");
         viewPager.setAdapter(viewPagerAdapter);
-
+        viewPager.addOnPageChangeListener(viewPagerAdapter);
         rootView = findViewById(R.id.activity_account);
 
         progressDialog = new ProgressDialog(AccountActivity.this, R.style.AppTheme_Dark_Dialog);
