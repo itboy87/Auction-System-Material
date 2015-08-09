@@ -37,4 +37,5 @@ public class ImageSliderAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return images.length;
     }
+
 }

@@ -62,11 +62,11 @@ public class DashboardActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_menu);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setHomeButtonEnabled(true);
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
     }
 
     private void initTabLayout(ViewPager viewPager, ViewPagerAdapter viewPagerAdapter) {
@@ -75,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         int length = tabLayout.getTabCount();
         for (int i = 0; i < length; i++) {
-            tabLayout.getTabAt(i).setCustomView(viewPagerAdapter.getTabView(i));
+            tabLayout.getTabAt(i).setCustomView(viewPagerAdapter.getTabView(tabLayout, i));
         }
         /*tabLayout.addTab(tabLayout.newTab().setText("Products"));
         tabLayout.addTab(tabLayout.newTab().setText("Bid Products"));
