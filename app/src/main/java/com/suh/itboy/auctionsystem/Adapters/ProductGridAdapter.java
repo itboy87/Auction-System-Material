@@ -56,28 +56,32 @@ public class ProductGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(this.context).inflate(R.layout.product_grid, parent, false);
 
-          /*  viewHolder = new ViewHolder();
+            viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title);*/
+            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        ImageView image = (ImageView) convertView.findViewById(R.id.image);
-        TextView title = (TextView) convertView.findViewById(R.id.title);
+       /* ImageView image = (ImageView) convertView.findViewById(R.id.image);
+        TextView title = (TextView) convertView.findViewById(R.id.title);*/
 
 
-        Glide.with(this.context).load(mImageList.get(position)).centerCrop().into(image);
+        Glide.with(this.context).load(mImageList.get(position)).centerCrop().into(viewHolder.image);
         //image.setImageResource(mImageList.get(position));
-        title.setText(mTitleList.get(position));
+        viewHolder.title.setText(mTitleList.get(position));
 
         return convertView;
     }
 
-/*    public static class ViewHolder {
+    public static class ViewHolder {
         public ImageView image;
         public TextView title;
-    }*/
+    }
 }
