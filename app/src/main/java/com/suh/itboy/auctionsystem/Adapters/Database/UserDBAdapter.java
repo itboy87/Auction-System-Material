@@ -21,7 +21,7 @@ public class UserDBAdapter implements BaseColumns {
     public static final String COLUMN_CREATED = "created_at";
 
 
-    private com.suh.itboy.auctionsystem.Helper.DatabaseHelper mDbHelper;
+    private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
     public UserDBAdapter(Context ctx) {

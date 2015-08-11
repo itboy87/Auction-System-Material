@@ -11,7 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.suh.itboy.auctionsystem.Fragments.Account.LoginFragment;
 import com.suh.itboy.auctionsystem.Fragments.Account.RegisterFragment;
@@ -99,15 +100,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ViewPager.
 
     public View getTabView(TabLayout tabLayout, int position) {
         View view = LayoutInflater.from(this.context).inflate(R.layout.tab_layout, tabLayout, false);
- /*       TextView title = (TextView) view.findViewById(R.id.title);
+        TextView title = (TextView) view.findViewById(R.id.title);
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
 
 
 
         icon.setImageResource(this.mIconList.get(position));
-        title.setText(this.getPageTitle(position));*/
-        ViewGroup layout = (ViewGroup) view.findViewById(R.id.layout);
-        layout.setBackgroundResource(this.mColorList.get(position));
+        title.setText(this.getPageTitle(position));
+        /*ViewGroup layout = (ViewGroup) view.findViewById(R.id.layout);
+        layout.setBackgroundResource(this.mColorList.get(position));*/
         return view;
     }
 

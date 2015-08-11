@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.suh.itboy.auctionsystem.R;
 
 import java.util.ArrayList;
@@ -55,24 +56,28 @@ public class ProductGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+//        ViewHolder viewHolder = null;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(this.context).inflate(R.layout.product_grid, parent, false);
 
-            viewHolder = new ViewHolder();
+          /*  viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.title);*/
         }
+        ImageView image = (ImageView) convertView.findViewById(R.id.image);
+        TextView title = (TextView) convertView.findViewById(R.id.title);
 
-        viewHolder.image.setImageResource(mImageList.get(position));
-        viewHolder.title.setText(mTitleList.get(position));
+
+        Glide.with(this.context).load(mImageList.get(position)).centerCrop().into(image);
+        //image.setImageResource(mImageList.get(position));
+        title.setText(mTitleList.get(position));
 
         return convertView;
     }
 
-    public static class ViewHolder {
+/*    public static class ViewHolder {
         public ImageView image;
         public TextView title;
-    }
+    }*/
 }
