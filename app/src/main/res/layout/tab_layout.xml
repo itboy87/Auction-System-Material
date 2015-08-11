@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-    <!--
+    android:orientation="vertical"
+    tools:background="@color/auction_accent">
         <ImageView
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/icon"
-            android:src="@drawable/ic_action_home"
-            android:layout_above="@+id/title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:src="@drawable/ic_action_home" />
 
         <TextView
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
             android:id="@+id/title"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />-->
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Home"
+            android:textColor="@color/white" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_action_home" />
-</RelativeLayout>
+</LinearLayout>

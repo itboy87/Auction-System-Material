@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/product_grid_background"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/product1" />
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/product_image"
+        android:padding="5dp"
+        tools:scaleType="centerCrop"
+        tools:src="@drawable/product1" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@drawable/product_grid_title"
-        android:gravity="center"
-        android:text="New Text" />
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        tools:text="New Text" />
+
 </LinearLayout>
