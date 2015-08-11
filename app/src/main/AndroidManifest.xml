@@ -25,6 +25,13 @@
             android:name=".Activities.DashboardActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name=".ProductDetailActivity"
+            android:label="@string/title_activity_product_detail" />
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>
