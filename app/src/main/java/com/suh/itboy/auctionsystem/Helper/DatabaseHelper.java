@@ -13,7 +13,7 @@ import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "auction";
+    private static final String DATABASE_NAME = "auction.db";
     private static final int DATABASE_VERSION = 1;
     private static final String CREATE_TABLE_USER = "create table "
             + UserDBAdapter.DATABASE_TABLE + " (_id integer primary key autoincrement, "
