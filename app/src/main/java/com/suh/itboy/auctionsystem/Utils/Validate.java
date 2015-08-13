@@ -12,19 +12,16 @@ import java.util.regex.Pattern;
  * Created by itboy on 8/1/2015.
  */
 public class Validate {
+
     public static boolean isEmpty(String $value) {
 
         //String.isEmpty() throws exception on null
-        if ($value == null)
-            return false;
-        return $value.trim().isEmpty();
+        return $value != null && $value.trim().isEmpty();
     }
 
     public static boolean email(String email) {
-        if (!isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())
-            return true;
-        else
-            return false;
+
+        return !isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches();
     }
 
     public static boolean password(String pass, int min, int max) {

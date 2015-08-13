@@ -108,9 +108,7 @@ public class UserDBAdapter implements BaseColumns {
 
     public boolean isUserExists(String email) {
         Cursor c = this.getByEmail(email);
-        if (c == null || c.getCount() < 1)
-            return false;
+        return !(c == null || c.getCount() < 1);
 
-        return true;
     }
 }

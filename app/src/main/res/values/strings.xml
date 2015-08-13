@@ -2,6 +2,7 @@
     <string name="app_name">Auction System</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_splash">Auction System</string>
+    <string name="action_settings">Setting</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="signin_fragment">Login Fragment</string>
