@@ -22,7 +22,7 @@ import com.suh.itboy.auctionsystem.Fragments.Dashboard.MySalesFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.PurchasesFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.WishListFragment;
 import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
-import com.suh.itboy.auctionsystem.Provider.ProductContentProvider;
+import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
         values.put(ProductDBAdapter.COLUMN_DESCRIPTION, description);
         values.put(ProductDBAdapter.COLUMN_PRICE, price);
 
-        return getContentResolver().insert(ProductContentProvider.CONTENT_URI, values);
+        return getContentResolver().insert(ProductProvider.CONTENT_URI, values);
     }
 
     private void setupDrawerLayout() {

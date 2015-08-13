@@ -30,7 +30,7 @@
             android:label="@string/title_activity_product_detail" />
 
         <provider
-            android:name=".Provider.ProductContentProvider"
+            android:name=".Provider.ProductProvider"
             android:authorities="com.suh.auctionsystem.productprovider"
             android:enabled="true"
             android:exported="false"></provider>

@@ -12,7 +12,7 @@ import android.net.Uri;
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 
-public class ProductContentProvider extends ContentProvider {
+public class ProductProvider extends ContentProvider {
     public static final String URI_AUTHORITY = "com.suh.auctionsystem.productprovider";
     static final String URL = "content://" + URI_AUTHORITY + "/" + ProductDBAdapter.DATABASE_TABLE;
     public static final Uri CONTENT_URI = Uri.parse(URL);
