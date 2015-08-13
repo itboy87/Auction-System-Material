@@ -1,6 +1,12 @@
 package com.suh.itboy.auctionsystem.Activities;
 
+import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CursorAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Adapters.ViewPagerAdapter;
@@ -25,7 +34,8 @@ import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
 import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    public CursorAdapter cursorAdapter;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -51,6 +61,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         //Log.d("DashboardActivity", "Product Inserted At " + productUri.getLastPathSegment());
 
+        String[] from = {ProductDBAdapter.COLUMN_TITLE};
+        int[] to = {R.id.title};
+        cursorAdapter = new SimpleCursorAdapter(DashboardActivity.this, R.layout.product_grid, null, from, to, 1);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     private Uri insertProduct(String name, String description, long price) {
@@ -103,7 +117,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
     }
 
@@ -115,19 +129,75 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        switch (id) {
+            case R.id.action_create_sample:
+                createSampleData();
+                break;
 
-        if (id == R.id.action_logout) {
-            UserSessionHelper.getInstance(this).logOutUser();
-            ActivityManager.startAccountActivity(this);
-        }
+            case R.id.action_delete_products:
+                deleteAllProducts();
+                break;
 
-        if (id == android.R.id.home) {
-            drawerLayout.openDrawer(GravityCompat.START);
+            case R.id.action_logout:
+                UserSessionHelper.getInstance(this).logOutUser();
+                ActivityManager.startAccountActivity(this);
+                break;
+
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createSampleData() {
+        insertProduct("Product 1", "Product 1 Description", 4000);
+        insertProduct("Product 2", "Product 2 Description", 6000);
+        insertProduct("Product 3", "Product 3 Description", 2000);
+        insertProduct("Product 4", "Product 4 Description", 9000);
+        insertProduct("Product 5", "Product 5 Description", 6000);
+        insertProduct("Product 6", "Product 6 Description", 2000);
+
+        restartLoader();
+    }
+
+    private void restartLoader() {
+        getLoaderManager().restartLoader(0, null, DashboardActivity.this);
+    }
+
+    private void deleteAllProducts() {
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    getContentResolver().delete(ProductProvider.CONTENT_URI, null, null);
+                    restartLoader();
+//                    App.ShowMsg(null, getString(R.string.all_delete_toast), null, null);
+                    Toast.makeText(DashboardActivity.this, getString(R.string.all_delete_toast), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.confirm_delete_all_products))
+                .setPositiveButton(getString(R.string.yes), clickListener)
+                .setNegativeButton(getString(R.string.No), clickListener)
+                .show();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(DashboardActivity.this, ProductProvider.CONTENT_URI, null, null, null,
+                ProductDBAdapter.COLUMN_CREATED + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        cursorAdapter.swapCursor(null);
     }
 }
