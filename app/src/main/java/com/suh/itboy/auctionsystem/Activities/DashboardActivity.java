@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -48,9 +47,9 @@ public class DashboardActivity extends AppCompatActivity {
         this.initTabLayout(viewPager, viewPagerAdapter);
         this.setupDrawerLayout();
 
-        Uri productUri = insertProduct("Product 1", "Product 1 Description", 4000);
+        //Uri productUri = insertProduct("Product 1", "Product 1 Description", 4000);
 
-        Log.d("DashboardActivity", "Product Inserted At " + productUri.getLastPathSegment());
+        //Log.d("DashboardActivity", "Product Inserted At " + productUri.getLastPathSegment());
 
     }
 

@@ -42,7 +42,7 @@ public class ProductContentProvider extends ContentProvider {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(ProductDBAdapter.DATABASE_TABLE);
 
-        return queryBuilder.query(database, projection, selection, selectionArgs, null, null, null, sortOrder);
+        return queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 //        throw new UnsupportedOperationException("Not yet implemented");
     }
 
