@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
         });*/
 
         GridView productsGrid = (GridView) view.findViewById(R.id.products);
+
         productsGrid.setAdapter(new ProductGridAdapter(getActivity()));
 
         productsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {

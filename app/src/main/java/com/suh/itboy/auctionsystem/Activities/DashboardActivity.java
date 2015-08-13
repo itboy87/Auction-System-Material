@@ -1,5 +1,7 @@
 package com.suh.itboy.auctionsystem.Activities;
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -9,9 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Adapters.ViewPagerAdapter;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.HomeFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.MessagesFragment;
@@ -19,6 +23,7 @@ import com.suh.itboy.auctionsystem.Fragments.Dashboard.MySalesFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.PurchasesFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.WishListFragment;
 import com.suh.itboy.auctionsystem.Helper.UserSessionHelper;
+import com.suh.itboy.auctionsystem.Provider.ProductContentProvider;
 import com.suh.itboy.auctionsystem.R;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -42,6 +47,20 @@ public class DashboardActivity extends AppCompatActivity {
         this.initToolBar();
         this.initTabLayout(viewPager, viewPagerAdapter);
         this.setupDrawerLayout();
+
+        Uri productUri = insertProduct("Product 1", "Product 1 Description", 4000);
+
+        Log.d("DashboardActivity", "Product Inserted At " + productUri.getLastPathSegment());
+
+    }
+
+    private Uri insertProduct(String name, String description, long price) {
+        ContentValues values = new ContentValues();
+        values.put(ProductDBAdapter.COLUMN_TITLE, name);
+        values.put(ProductDBAdapter.COLUMN_DESCRIPTION, description);
+        values.put(ProductDBAdapter.COLUMN_PRICE, price);
+
+        return getContentResolver().insert(ProductContentProvider.CONTENT_URI, values);
     }
 
     private void setupDrawerLayout() {

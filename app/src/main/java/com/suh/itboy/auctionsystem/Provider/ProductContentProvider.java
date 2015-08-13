@@ -13,15 +13,15 @@ import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 
 public class ProductContentProvider extends ContentProvider {
-    static final String URI_AUTHORITY = "com.suh.auctionsystem.productprovider";
+    public static final String URI_AUTHORITY = "com.suh.auctionsystem.productprovider";
     static final String URL = "content://" + URI_AUTHORITY + "/" + ProductDBAdapter.DATABASE_TABLE;
-    static final Uri CONTENT_URI = Uri.parse(URL);
+    public static final Uri CONTENT_URI = Uri.parse(URL);
 
     static final int PRODUCTS = 1;
     static final int PRODUCT_ID = 2;
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    ;
+
 
     static {
         uriMatcher.addURI(URI_AUTHORITY, ProductDBAdapter.DATABASE_TABLE, PRODUCTS);
