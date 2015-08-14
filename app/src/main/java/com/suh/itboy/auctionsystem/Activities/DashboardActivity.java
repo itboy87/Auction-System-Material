@@ -20,10 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CursorAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
+import com.suh.itboy.auctionsystem.Adapters.ProductCursorAdapter;
 import com.suh.itboy.auctionsystem.Adapters.ViewPagerAdapter;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.HomeFragment;
 import com.suh.itboy.auctionsystem.Fragments.Dashboard.MessagesFragment;
@@ -61,9 +61,8 @@ public class DashboardActivity extends AppCompatActivity implements LoaderManage
 
         //Log.d("DashboardActivity", "Product Inserted At " + productUri.getLastPathSegment());
 
-        String[] from = {ProductDBAdapter.COLUMN_TITLE};
-        int[] to = {R.id.title};
-        cursorAdapter = new SimpleCursorAdapter(DashboardActivity.this, R.layout.product_grid, null, from, to, 1);
+        cursorAdapter = new ProductCursorAdapter(DashboardActivity.this, null, 0);
+
         getLoaderManager().initLoader(0, null, this);
     }
 

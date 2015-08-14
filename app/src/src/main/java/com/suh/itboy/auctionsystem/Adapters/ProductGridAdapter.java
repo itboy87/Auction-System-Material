@@ -59,7 +59,7 @@ public class ProductGridAdapter extends BaseAdapter {
 //        ViewHolder viewHolder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(this.context).inflate(R.layout.product_grid, parent, false);
+            convertView = LayoutInflater.from(this.context).inflate(R.layout.product_grid_item, parent, false);
 
           /*  viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
