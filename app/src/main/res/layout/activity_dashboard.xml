@@ -45,6 +45,7 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
+            android:onClick="AddProduct"
             android:src="@drawable/ic_action_add"
             app:fabSize="normal" />
     </android.support.design.widget.CoordinatorLayout>

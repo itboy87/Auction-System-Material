@@ -1,10 +1,12 @@
 package com.suh.itboy.auctionsystem.Activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.Toast;
 
@@ -35,6 +38,7 @@ import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 
 public class DashboardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int PRODUCT_REQUEST_CODE = 200;
     public CursorAdapter cursorAdapter;
     private DrawerLayout drawerLayout;
 
@@ -198,5 +202,20 @@ public class DashboardActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PRODUCT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(DashboardActivity.this, "RESULT OK", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(DashboardActivity.this, "RESULT NOT OK", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AddProduct(View view) {
+        Intent productIntent = new Intent(DashboardActivity.this, AddProductActivity.class);
+        startActivityForResult(productIntent, PRODUCT_REQUEST_CODE);
     }
 }

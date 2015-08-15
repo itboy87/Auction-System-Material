@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suh.itboy.auctionsystem" >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +34,16 @@
             android:name=".Provider.ProductProvider"
             android:authorities="com.suh.auctionsystem.productprovider"
             android:enabled="true"
-            android:exported="false"></provider>
+            android:exported="false" />
+
+        <activity
+            android:name=".Activities.AddProductActivity"
+            android:label="@string/title_activity_add_product"
+            android:parentActivityName=".Activities.DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.suh.itboy.auctionsystem.Activities.DashboardActivity" />
+        </activity>
     </application>
 
 </manifest>

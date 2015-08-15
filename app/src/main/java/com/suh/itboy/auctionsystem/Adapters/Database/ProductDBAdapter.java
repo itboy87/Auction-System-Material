@@ -16,6 +16,7 @@ public class ProductDBAdapter implements BaseColumns {
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_CREATED = "created_at";
     public static final String COLUMN_PRICE = "price";
+    public static final String COLUMN_IMAGE = "picture";
 
     public static final String DATABASE_TABLE = "product";
 

@@ -15,23 +15,30 @@ import com.suh.itboy.auctionsystem.Adapters.Database.UserDBAdapter;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "auction.db";
     private static final int DATABASE_VERSION = 1;
+
+    private static final String COMMA = ",";
+    private static final String TEXT_NO_CASE = " TEXT collate nocase";
+    private static final String TEXT = " TEXT,";
+
     private static final String CREATE_TABLE_USER = "create table "
             + UserDBAdapter.DATABASE_TABLE + " (_id integer primary key autoincrement, "
-            + UserDBAdapter.COLUMN_EMAIL + " TEXT collate nocase,"
-            + UserDBAdapter.COLUMN_PASS + " TEXT,"
+            + UserDBAdapter.COLUMN_EMAIL + TEXT_NO_CASE + COMMA
+            + UserDBAdapter.COLUMN_PASS + TEXT
             + UserDBAdapter.COLUMN_CREATED + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ");";
     private static final String CREATE_TABLE_PROFILE = "create table "
             + ProfileDBAdapter.DATABASE_TABLE + " (_id integer primary key autoincrement, "
             + ProfileDBAdapter.COLUMN_USER_ID + " integer REFERENCES "
             + UserDBAdapter.DATABASE_TABLE + ","
-            + ProfileDBAdapter.COLUMN_NAME + " TEXT collate nocase,"
-            + ProfileDBAdapter.COLUMN_AVATAR + " TEXT collate nocase,"
-            + ProfileDBAdapter.COLUMN_GENDER + " TEXT collate nocase" + ");";
+            + ProfileDBAdapter.COLUMN_NAME + TEXT_NO_CASE + COMMA
+            + ProfileDBAdapter.COLUMN_AVATAR + TEXT_NO_CASE + COMMA
+            + ProfileDBAdapter.COLUMN_GENDER + TEXT_NO_CASE + ");";
+
     private static final String CREATE_TABLE_PRODUCT = "create table "
             + ProductDBAdapter.DATABASE_TABLE + " (_id integer primary key autoincrement, "
-            + ProductDBAdapter.COLUMN_TITLE + " TEXT collate nocase,"
-            + ProductDBAdapter.COLUMN_DESCRIPTION + " TEXT collate nocase,"
+            + ProductDBAdapter.COLUMN_TITLE + TEXT_NO_CASE + COMMA
+            + ProductDBAdapter.COLUMN_DESCRIPTION + TEXT_NO_CASE + COMMA
             + ProductDBAdapter.COLUMN_PRICE + " INT,"
+            + ProductDBAdapter.COLUMN_IMAGE + TEXT_NO_CASE + COMMA
             + ProductDBAdapter.COLUMN_CREATED + " INT" + ");";
     private static SQLiteDatabase sInstance;
 
