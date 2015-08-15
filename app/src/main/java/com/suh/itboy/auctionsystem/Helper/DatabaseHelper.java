@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + UserDBAdapter.COLUMN_EMAIL + TEXT_NO_CASE + COMMA
             + UserDBAdapter.COLUMN_PASS + TEXT
             + UserDBAdapter.COLUMN_CREATED + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ");";
+
     private static final String CREATE_TABLE_PROFILE = "create table "
             + ProfileDBAdapter.DATABASE_TABLE + " (_id integer primary key autoincrement, "
             + ProfileDBAdapter.COLUMN_USER_ID + " integer REFERENCES "

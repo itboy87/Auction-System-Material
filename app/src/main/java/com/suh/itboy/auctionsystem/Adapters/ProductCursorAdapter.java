@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.R;
+import com.suh.itboy.auctionsystem.Utils.App;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by itboy on 8/14/2015.
@@ -44,8 +44,6 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView title = (TextView) view.findViewById(R.id.title);
 
         title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
-        int max = mImageList.size() - 1;
-        int min = 0;
-        image.setImageResource(mImageList.get(new Random().nextInt(max - min + 1) + min));
+        image.setImageResource(mImageList.get(App.getRandom(0, mImageList.size() - 1)));
     }
 }
