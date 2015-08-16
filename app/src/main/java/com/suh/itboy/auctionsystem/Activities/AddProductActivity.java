@@ -2,14 +2,12 @@ package com.suh.itboy.auctionsystem.Activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -17,16 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.App;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class AddProductActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE = 100;
@@ -102,7 +96,7 @@ public class AddProductActivity extends AppCompatActivity {
 
                 String imageInternalPath = Long.toString(id) + "." + App.getExtension(imagePath);
 
-                if (App.writeImageToInternal(getApplicationContext(), bitmapImage, imageInternalPath)) {
+                if (App.saveFile(getApplicationContext(), bitmapImage, imageInternalPath)) {
                     /*if (!(insertProductImage(id, imageInternalPath) > 0)){
                         Toast.makeText(AddProductActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
                     }*/
