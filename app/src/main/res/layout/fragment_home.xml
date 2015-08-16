@@ -15,11 +15,11 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:drawSelectorOnTop="true"
-        android:horizontalSpacing="8dp"
+        android:horizontalSpacing="7dp"
         android:numColumns="auto_fit"
         android:scrollbarStyle="outsideOverlay"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="15dp"
+        android:verticalSpacing="7dp"
         tools:ignore="Overdraw" />
 
     <!--android:horizontalSpacing="@dimen/spacing_micro"-->

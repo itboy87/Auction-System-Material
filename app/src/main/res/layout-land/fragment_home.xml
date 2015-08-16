@@ -19,7 +19,7 @@
         android:numColumns="3"
         android:scrollbarStyle="outsideOverlay"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="13dp"
+        android:verticalSpacing="7dp"
         tools:ignore="Overdraw" />
 
 </LinearLayout>
