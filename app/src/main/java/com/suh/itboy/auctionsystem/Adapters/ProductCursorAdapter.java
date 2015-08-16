@@ -2,6 +2,7 @@ package com.suh.itboy.auctionsystem.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.R;
-import com.suh.itboy.auctionsystem.Utils.App;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,18 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView title = (TextView) view.findViewById(R.id.title);
 
         title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
-        image.setImageResource(mImageList.get(App.getRandom(0, mImageList.size() - 1)));
+
+        String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
+        if (imagePath != null && imagePath.length() > 0) {
+
+//            Glide.with(context).load(context.getFileStreamPath(imagePath)).into(image);
+            image.setImageDrawable(
+                    Drawable.createFromPath(
+                            context.getFileStreamPath(imagePath).toString()
+                    )
+            );
+        }
+
+//        image.setImageResource(mImageList.get(App.getRandom(0, mImageList.size() - 1)));
     }
 }

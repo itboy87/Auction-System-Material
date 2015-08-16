@@ -6,8 +6,6 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
@@ -16,7 +14,8 @@ import java.util.Random;
  * Created by itboy on 8/2/2015.
  */
 public class App {
-    private static final String TAG = "APP:saveFile";
+    private static final String TAG = "Auction.Debug:APP";
+//    private static ProgressDialog progressDialog;
 
     public static void ShowMsg(View view, String value, String actionString, View.OnClickListener clickListener) {
         Snackbar.make(view, value, Snackbar.LENGTH_LONG).setAction(actionString, clickListener)
@@ -33,40 +32,24 @@ public class App {
         }
     }
 
-    public static boolean saveFile(Context context, Bitmap b, String picName) {
+    public static boolean writeImageToInternal(Context context, Bitmap b, String picName) {
         FileOutputStream fos;
         try {
             fos = context.openFileOutput(picName, Context.MODE_PRIVATE);
-            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            String extension = App.getExtension(picName);
+            if (extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg"))
+                b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            else if (extension.equalsIgnoreCase("png"))
+                b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            else {
+                fos.close();
+                Log.d(TAG, "Unknown Extension: " + extension);
+                return false;
+            }
+
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "file not found");
-            e.printStackTrace();
-            return false;
         } catch (IOException e) {
             Log.d(TAG, "io exception");
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-    
-    public static boolean writeImageToInternal(Context context, Bitmap bitmapImage, String path) {
-
-        File file = new File(context.getFilesDir(), path);
-        try {
-            FileOutputStream outputStream = context.openFileOutput(path, Context.MODE_PRIVATE);
-            String extension = App.getExtension(path);
-            if (extension.equalsIgnoreCase("jpeg"))
-                bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            else if (extension.equalsIgnoreCase("png"))
-                bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            else
-                return false;
-            outputStream.close();
-
-        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -78,4 +61,19 @@ public class App {
     public static int getRandom(int min, int max) {
         return new Random().nextInt(max - min + 1) + min;
     }
+
+/*    public static void showProgressDialog(Context context, String title, String message){
+        if (progressDialog == null)
+            progressDialog = new ProgressDialog(context);
+
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+
+        progressDialog.show();
+    }
+
+    public static void closeProgressDialog(){
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }*/
 }

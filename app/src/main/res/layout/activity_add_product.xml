@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         android:orientation="vertical"
-        android:padding="20dp"
         tools:layout_height="wrap_content">
 
         <ImageView
@@ -41,6 +41,20 @@
             android:ems="10"
             android:hint="Product Price"
             android:inputType="numberSigned" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addProduct"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="cancelProduct"
+            android:text="Cancel" />
 
     </LinearLayout>
 </ScrollView>

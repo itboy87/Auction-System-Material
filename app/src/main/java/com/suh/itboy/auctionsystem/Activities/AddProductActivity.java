@@ -1,6 +1,7 @@
 package com.suh.itboy.auctionsystem.Activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,7 +29,8 @@ public class AddProductActivity extends AppCompatActivity {
     EditText product_title;
     EditText product_description;
     EditText product_price;
-    Bitmap bitmapImage;
+    Bitmap bitmapImage = null;
+    String imagePath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,30 +82,10 @@ public class AddProductActivity extends AppCompatActivity {
                 Cursor imageCursor = getContentResolver().query(selectedImage, imagePathColumn, null, null, null);
                 imageCursor.moveToFirst();
 
-                String imagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
+                imagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
                 imageCursor.close();
                 bitmapImage = BitmapFactory.decodeFile(imagePath);
                 product_image.setImageBitmap(bitmapImage);
-
-
-                long id = App.getRandom(44555, 2342342);
-                /*long id = insertProduct(
-                        product_title.getText().toString(),
-                        product_description.getText().toString(),
-                        Integer.parseInt(product_price.getText().toString())
-                        );*/
-
-
-                String imageInternalPath = Long.toString(id) + "." + App.getExtension(imagePath);
-
-                if (App.saveFile(getApplicationContext(), bitmapImage, imageInternalPath)) {
-                    /*if (!(insertProductImage(id, imageInternalPath) > 0)){
-                        Toast.makeText(AddProductActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
-                    }*/
-                    Toast.makeText(AddProductActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddProductActivity.this, "Unable to save image in internal storage", Toast.LENGTH_SHORT).show();
-                }
 
 
             } else {
@@ -129,4 +111,43 @@ public class AddProductActivity extends AppCompatActivity {
         return getContentResolver().update(ProductProvider.CONTENT_URI, values, ProductDBAdapter.ROW_ID + "= ?", new String[]{String.valueOf(id)});
     }
 
+    public void addProduct(View view) {
+        ProgressDialog progressDialog = new ProgressDialog(AddProductActivity.this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.show();
+
+
+        long id = insertProduct(
+                product_title.getText().toString(),
+                product_description.getText().toString(),
+                Integer.parseInt(product_price.getText().toString())
+        );
+
+        if (id > 0) {
+            setResult(Activity.RESULT_OK);
+        } else {
+            setResult(Activity.RESULT_CANCELED);
+        }
+
+        if (imagePath.length() > 0 && bitmapImage != null && id > 0) {
+            String imageInternalPath = Long.toString(id) + "." + App.getExtension(imagePath);
+
+            if (App.writeImageToInternal(getApplicationContext(), bitmapImage, imageInternalPath)) {
+                if (!(insertProductImage(id, imageInternalPath) > 0)) {
+                    Toast.makeText(AddProductActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(AddProductActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(AddProductActivity.this, "Unable to save image in internal storage", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        progressDialog.cancel();
+        finish();
+    }
+
+    public void cancelProduct(View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
 }
