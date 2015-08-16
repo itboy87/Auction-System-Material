@@ -13,24 +13,13 @@ import android.widget.TextView;
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by itboy on 8/14/2015.
  */
 public class ProductCursorAdapter extends CursorAdapter {
-    private List<Integer> mImageList = new ArrayList<>();
 
     public ProductCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-
-        mImageList.add(R.drawable.product1);
-        mImageList.add(R.drawable.product2);
-        mImageList.add(R.drawable.product3);
-        mImageList.add(R.drawable.product4);
-        mImageList.add(R.drawable.product5);
-        mImageList.add(R.drawable.product6);
     }
 
     @Override
@@ -54,8 +43,10 @@ public class ProductCursorAdapter extends CursorAdapter {
                             context.getFileStreamPath(imagePath).toString()
                     )
             );
+        } else {
+            image.setImageResource(R.drawable.product_placeholder);
         }
-
+//        Get Random image
 //        image.setImageResource(mImageList.get(App.getRandom(0, mImageList.size() - 1)));
     }
 }

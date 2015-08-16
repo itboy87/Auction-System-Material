@@ -24,12 +24,12 @@ public class ProductGridAdapter extends BaseAdapter {
 
     public ProductGridAdapter(Context context) {
         this.context = context;
-        mImageList.add(R.drawable.product1);
+        /*mImageList.add(R.drawable.product1);
         mImageList.add(R.drawable.product2);
         mImageList.add(R.drawable.product3);
         mImageList.add(R.drawable.product4);
         mImageList.add(R.drawable.product5);
-        mImageList.add(R.drawable.product6);
+        mImageList.add(R.drawable.product6);*/
 
         mTitleList.add("Product 1");
         mTitleList.add("Product 2");
