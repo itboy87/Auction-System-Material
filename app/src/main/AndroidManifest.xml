@@ -38,7 +38,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".Activities.AddProductActivity"
+            android:name=".Activities.ProductEditorActivity"
             android:label="@string/title_activity_add_product"
             android:parentActivityName=".Activities.DashboardActivity">
             <meta-data

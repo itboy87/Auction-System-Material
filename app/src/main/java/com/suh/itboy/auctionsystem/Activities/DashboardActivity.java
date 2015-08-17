@@ -214,7 +214,7 @@ public class DashboardActivity extends AppCompatActivity implements LoaderManage
     }
 
     public void AddProduct(View view) {
-        Intent productIntent = new Intent(DashboardActivity.this, AddProductActivity.class);
+        Intent productIntent = new Intent(DashboardActivity.this, ProductEditorActivity.class);
         startActivityForResult(productIntent, PRODUCT_REQUEST_CODE);
     }
 }

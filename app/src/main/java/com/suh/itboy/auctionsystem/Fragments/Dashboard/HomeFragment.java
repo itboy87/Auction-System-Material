@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.suh.itboy.auctionsystem.Activities.AddProductActivity;
 import com.suh.itboy.auctionsystem.Activities.DashboardActivity;
+import com.suh.itboy.auctionsystem.Activities.ProductEditorActivity;
 import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                App.ShowMsg(view, "item selected at " + position + " id: " + id, null, null);
-                Intent intent = new Intent(getActivity(), AddProductActivity.class);
+                Intent intent = new Intent(getActivity(), ProductEditorActivity.class);
                 Uri uri = Uri.parse(ProductProvider.CONTENT_URI + "/" + String.valueOf(id));
                 intent.putExtra(ProductProvider.PRODUCT_EDIT_TYPE, uri);
 

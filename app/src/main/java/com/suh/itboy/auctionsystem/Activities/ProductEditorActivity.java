@@ -27,7 +27,7 @@ import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.App;
 import com.suh.itboy.auctionsystem.Utils.Validate;
 
-public class AddProductActivity extends AppCompatActivity {
+public class ProductEditorActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE = 100;
     ImageView product_image;
     EditText product_title;
@@ -136,7 +136,7 @@ public class AddProductActivity extends AppCompatActivity {
 
 
             } else {
-                Toast.makeText(AddProductActivity.this, "NO Data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductEditorActivity.this, "NO Data", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -166,7 +166,7 @@ public class AddProductActivity extends AppCompatActivity {
             return;
         }
 
-        ProgressDialog progressDialog = new ProgressDialog(AddProductActivity.this);
+        ProgressDialog progressDialog = new ProgressDialog(ProductEditorActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
 
@@ -192,7 +192,7 @@ public class AddProductActivity extends AppCompatActivity {
                 break;
 
             default:
-                Toast.makeText(AddProductActivity.this, "Incorrect Action: " + action, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductEditorActivity.this, "Incorrect Action: " + action, Toast.LENGTH_SHORT).show();
                 setResult(Activity.RESULT_CANCELED);
                 finish();
 
@@ -209,11 +209,11 @@ public class AddProductActivity extends AppCompatActivity {
 
             if (App.writeImageToInternal(getApplicationContext(), bitmapImage, imageInternalPath)) {
                 if (!(insertProductImage(imageInternalPath, productFilter) > 0)) {
-                    Toast.makeText(AddProductActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductEditorActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
                 }
-//                Toast.makeText(AddProductActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ProductEditorActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(AddProductActivity.this, "Unable to save image in internal storage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductEditorActivity.this, "Unable to save image in internal storage", Toast.LENGTH_SHORT).show();
             }
         }
 
