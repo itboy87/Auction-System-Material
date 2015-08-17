@@ -38,7 +38,7 @@ import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 
 public class DashboardActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int PRODUCT_REQUEST_CODE = 200;
+    public static final int PRODUCT_REQUEST_CODE = 200;
     public CursorAdapter cursorAdapter;
     private DrawerLayout drawerLayout;
 
@@ -207,6 +207,7 @@ public class DashboardActivity extends AppCompatActivity implements LoaderManage
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == PRODUCT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             restartLoader();
         }

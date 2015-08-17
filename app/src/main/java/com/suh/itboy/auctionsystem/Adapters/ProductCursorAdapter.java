@@ -2,6 +2,7 @@ package com.suh.itboy.auctionsystem.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,22 +30,30 @@ public class ProductCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ImageView image = (ImageView) view.findViewById(R.id.image);
-        TextView title = (TextView) view.findViewById(R.id.title);
+        ImageView product_image = (ImageView) view.findViewById(R.id.product_image);
+        TextView product_title = (TextView) view.findViewById(R.id.product_title);
+        TextView product_price = (TextView) view.findViewById(R.id.product_price);
 
-        title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
+        product_title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
+        product_title.setTypeface(null, Typeface.BOLD);
+        int price = cursor.getInt(cursor.getColumnIndex(ProductDBAdapter.COLUMN_PRICE));
 
+        if (price == -1) {
+            product_price.setText(R.string.price_not_available);
+        } else {
+            product_price.setText(String.valueOf(price) + " $");
+        }
         String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
         if (imagePath != null && imagePath.length() > 0) {
 
 //            Glide.with(context).load(context.getFileStreamPath(imagePath)).into(image);
-            image.setImageDrawable(
+            product_image.setImageDrawable(
                     Drawable.createFromPath(
                             context.getFileStreamPath(imagePath).toString()
                     )
             );
         } else {
-            image.setImageResource(R.drawable.product_placeholder);
+            product_image.setImageResource(R.drawable.product_placeholder);
         }
 //        Get Random image
 //        image.setImageResource(mImageList.get(App.getRandom(0, mImageList.size() - 1)));

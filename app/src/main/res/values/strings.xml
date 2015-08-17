@@ -28,4 +28,5 @@
     <string name="No">No</string>
     <string name="all_delete_toast">All Products Deleted!</string>
     <string name="title_activity_add_product">AddProductActivity</string>
+    <string name="price_not_available"><i>Price Not Available</i></string>
 </resources>

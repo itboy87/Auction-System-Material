@@ -14,9 +14,9 @@ import com.suh.itboy.auctionsystem.Helper.DatabaseHelper;
 
 public class ProductProvider extends ContentProvider {
     public static final String URI_AUTHORITY = "com.suh.auctionsystem.productprovider";
+    public static final String PRODUCT_EDIT_TYPE = "PRODUCT_EDIT";
     static final String URL = "content://" + URI_AUTHORITY + "/" + ProductDBAdapter.DATABASE_TABLE;
     public static final Uri CONTENT_URI = Uri.parse(URL);
-
     static final int PRODUCTS = 1;
     static final int PRODUCT_ID = 2;
 
@@ -41,7 +41,12 @@ public class ProductProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(ProductDBAdapter.DATABASE_TABLE);
-
+        switch (uriMatcher.match(uri)) {
+            case PRODUCT_ID:
+                selection = ProductDBAdapter.ROW_ID + "=" + uri.getLastPathSegment();
+                break;
+        }
+//    return database.query(ProductDBAdapter.DATABASE_TABLE, projection, selection, selectionArgs,null,null,sortOrder);
         return queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 //        throw new UnsupportedOperationException("Not yet implemented");
     }

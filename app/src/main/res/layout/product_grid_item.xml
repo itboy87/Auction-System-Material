@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/product_image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/product_image"
@@ -16,13 +16,23 @@
         tools:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/product_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/product_grid_title"
-        android:gravity="center_horizontal"
-        android:padding="10dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         tools:text="New Text" />
+
+    <TextView
+        android:id="@+id/product_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/red"
+        tools:text="8990 $" />
 
 </LinearLayout>

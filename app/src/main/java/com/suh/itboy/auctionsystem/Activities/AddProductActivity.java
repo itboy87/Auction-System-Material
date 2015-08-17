@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
 import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.App;
+import com.suh.itboy.auctionsystem.Utils.Validate;
 
 public class AddProductActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE = 100;
@@ -32,6 +36,10 @@ public class AddProductActivity extends AppCompatActivity {
     Bitmap bitmapImage = null;
     String imagePath = "";
 
+    String action = Intent.ACTION_INSERT;
+    String productFilter;
+    String productId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,45 @@ public class AddProductActivity extends AppCompatActivity {
         product_title = (EditText) findViewById(R.id.product_title);
         product_description = (EditText) findViewById(R.id.product_description);
         product_price = (EditText) findViewById(R.id.product_price);
+        Uri uri = getIntent().getParcelableExtra(ProductProvider.PRODUCT_EDIT_TYPE);
+        if (uri == null) {
+            action = Intent.ACTION_INSERT;
+        } else {
+            action = Intent.ACTION_EDIT;
+            setTitle("Add New Product");
+            productId = uri.getLastPathSegment();
+            productFilter = ProductDBAdapter.ROW_ID + "=" + productId;
+
+            ((Button) findViewById(R.id.add_button)).setText("Update");
+
+            Cursor cursor = getContentResolver().query(uri, null, productFilter, null, null);
+
+
+            cursor.moveToFirst();
+
+            product_title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
+            product_description.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_DESCRIPTION)));
+            int price = cursor.getInt(cursor.getColumnIndex(ProductDBAdapter.COLUMN_PRICE));
+            if (price == -1) {
+                product_price.setText("");
+            } else {
+                product_price.setText(String.valueOf(price));
+            }
+
+            String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
+            if (imagePath != null && imagePath.length() > 0) {
+
+//            Glide.with(context).load(context.getFileStreamPath(imagePath)).into(image);
+                product_image.setImageDrawable(
+                        Drawable.createFromPath(
+                                getFileStreamPath(imagePath).toString()
+                        )
+                );
+            } else {
+                product_image.setImageResource(R.drawable.product_placeholder);
+            }
+
+        }
     }
 
     @Override
@@ -94,34 +141,62 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
 
-    private long insertProduct(String title, String description, long price) {
+    private long insertProduct(ContentValues productValues) {
+        return Long.parseLong(getContentResolver().insert(ProductProvider.CONTENT_URI, productValues).getLastPathSegment());
+    }
+
+    @NonNull
+    private ContentValues getProductContentValues(String title, String description, long price) {
         ContentValues values = new ContentValues();
         values.put(ProductDBAdapter.COLUMN_TITLE, title);
         values.put(ProductDBAdapter.COLUMN_DESCRIPTION, description);
         values.put(ProductDBAdapter.COLUMN_PRICE, price);
-//        values.put(ProductDBAdapter.COLUMN_IMAGE, imagePath);
-
-        return Long.parseLong(getContentResolver().insert(ProductProvider.CONTENT_URI, values).getLastPathSegment());
+        return values;
     }
 
-    private int insertProductImage(long id, String imagePath) {
+    private int insertProductImage(String imagePath, String productFilter) {
         ContentValues values = new ContentValues();
         values.put(ProductDBAdapter.COLUMN_IMAGE, imagePath);
 
-        return getContentResolver().update(ProductProvider.CONTENT_URI, values, ProductDBAdapter.ROW_ID + "= ?", new String[]{String.valueOf(id)});
+        return getContentResolver().update(ProductProvider.CONTENT_URI, values, productFilter, null);
     }
 
     public void addProduct(View view) {
+        if (!ValidateValues()) {
+            return;
+        }
+
         ProgressDialog progressDialog = new ProgressDialog(AddProductActivity.this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
 
+        long id = 0;
 
-        long id = insertProduct(
+        int price = (Validate.isEmpty(product_price.getText().toString())) ? -1 : Integer.parseInt(product_price.getText().toString());
+        ContentValues productValues = getProductContentValues(
                 product_title.getText().toString(),
                 product_description.getText().toString(),
-                Integer.parseInt(product_price.getText().toString())
+                price
         );
+
+        switch (action) {
+
+            case Intent.ACTION_INSERT:
+                id = insertProduct(productValues);
+                productId = String.valueOf(id);
+                break;
+
+            case Intent.ACTION_EDIT:
+                getContentResolver().update(ProductProvider.CONTENT_URI, productValues, productFilter, null);
+                id = Integer.parseInt(productId);
+                break;
+
+            default:
+                Toast.makeText(AddProductActivity.this, "Incorrect Action: " + action, Toast.LENGTH_SHORT).show();
+                setResult(Activity.RESULT_CANCELED);
+                finish();
+
+        }
 
         if (id > 0) {
             setResult(Activity.RESULT_OK);
@@ -130,13 +205,13 @@ public class AddProductActivity extends AppCompatActivity {
         }
 
         if (imagePath.length() > 0 && bitmapImage != null && id > 0) {
-            String imageInternalPath = Long.toString(id) + "." + App.getExtension(imagePath);
+            String imageInternalPath = productId + "." + App.getExtension(imagePath);
 
             if (App.writeImageToInternal(getApplicationContext(), bitmapImage, imageInternalPath)) {
-                if (!(insertProductImage(id, imageInternalPath) > 0)) {
+                if (!(insertProductImage(imageInternalPath, productFilter) > 0)) {
                     Toast.makeText(AddProductActivity.this, "Unable to save image path in database", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(AddProductActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddProductActivity.this, "Image inserted into internal storage", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(AddProductActivity.this, "Unable to save image in internal storage", Toast.LENGTH_SHORT).show();
             }
@@ -144,6 +219,22 @@ public class AddProductActivity extends AppCompatActivity {
 
         progressDialog.cancel();
         finish();
+    }
+
+    private boolean ValidateValues() {
+
+        if (Validate.isEmpty(product_title.getText().toString())) {
+            product_title.setError("Enter product title!");
+            return false;
+        }
+
+        String price = product_price.getText().toString();
+        if (!Validate.isEmpty(price) && !Validate.isInt(price)) {
+            product_price.setError("Enter Price in numeric only!");
+            return false;
+        }
+
+        return true;
     }
 
     public void cancelProduct(View view) {

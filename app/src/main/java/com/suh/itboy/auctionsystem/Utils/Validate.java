@@ -1,6 +1,7 @@
 package com.suh.itboy.auctionsystem.Utils;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.widget.TextView;
@@ -41,6 +42,10 @@ public class Validate {
         }
 
         return true;
+    }
+
+    public static boolean isInt(String value) {
+        return TextUtils.isDigitsOnly(value);
     }
 
     public static boolean full_name(String name) {
