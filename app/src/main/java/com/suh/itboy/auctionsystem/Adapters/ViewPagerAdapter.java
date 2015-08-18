@@ -104,7 +104,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ViewPager.
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
 
 
-
         icon.setImageResource(this.mIconList.get(position));
         title.setText(this.getPageTitle(position));
         /*ViewGroup layout = (ViewGroup) view.findViewById(R.id.layout);

@@ -34,7 +34,8 @@
             backward-compatibility can go here.
         -->
     </style>
-    <style name="AccountTheme" parent="Theme.AppCompat.NoActionBar"/>
+
+    <style name="AccountTheme" parent="@style/Theme.AppCompat.NoActionBar" />
 
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog"/>
 

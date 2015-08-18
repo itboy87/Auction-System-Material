@@ -12,7 +12,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,8 @@ import com.suh.itboy.auctionsystem.Provider.ProductProvider;
 import com.suh.itboy.auctionsystem.R;
 import com.suh.itboy.auctionsystem.Utils.App;
 import com.suh.itboy.auctionsystem.Utils.Validate;
+
+import java.util.Objects;
 
 public class ProductEditorActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE = 100;
@@ -45,47 +49,57 @@ public class ProductEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        setSupportActionBar((Toolbar) findViewById(R.id.tool_bar));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+//            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         product_image = (ImageView) findViewById(R.id.product_image);
         product_title = (EditText) findViewById(R.id.product_title);
         product_description = (EditText) findViewById(R.id.product_description);
         product_price = (EditText) findViewById(R.id.product_price);
         Uri uri = getIntent().getParcelableExtra(ProductProvider.PRODUCT_EDIT_TYPE);
         if (uri == null) {
+            setTitle("Add New Product");
             action = Intent.ACTION_INSERT;
         } else {
             action = Intent.ACTION_EDIT;
-            setTitle("Add New Product");
             productId = uri.getLastPathSegment();
             productFilter = ProductDBAdapter.ROW_ID + "=" + productId;
 
             ((Button) findViewById(R.id.add_button)).setText("Update");
 
             Cursor cursor = getContentResolver().query(uri, null, productFilter, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                product_title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
+                product_description.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_DESCRIPTION)));
+                int price = cursor.getInt(cursor.getColumnIndex(ProductDBAdapter.COLUMN_PRICE));
+                if (price == -1) {
+                    product_price.setText("");
+                } else {
+                    product_price.setText(String.valueOf(price));
+                }
 
-
-            cursor.moveToFirst();
-
-            product_title.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_TITLE)));
-            product_description.setText(cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_DESCRIPTION)));
-            int price = cursor.getInt(cursor.getColumnIndex(ProductDBAdapter.COLUMN_PRICE));
-            if (price == -1) {
-                product_price.setText("");
-            } else {
-                product_price.setText(String.valueOf(price));
-            }
-
-            String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
-            if (imagePath != null && imagePath.length() > 0) {
+                String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
+                cursor.close();
+                if (imagePath != null && imagePath.length() > 0) {
 
 //            Glide.with(context).load(context.getFileStreamPath(imagePath)).into(image);
-                product_image.setImageDrawable(
-                        Drawable.createFromPath(
-                                getFileStreamPath(imagePath).toString()
-                        )
-                );
+                    product_image.setImageDrawable(
+                            Drawable.createFromPath(
+                                    getFileStreamPath(imagePath).toString()
+                            )
+                    );
+                } else {
+                    product_image.setImageResource(R.drawable.product_placeholder);
+                }
             } else {
-                product_image.setImageResource(R.drawable.product_placeholder);
+                Toast.makeText(ProductEditorActivity.this, "Error Getting Data From Database!", Toast.LENGTH_SHORT).show();
             }
+
 
         }
     }
@@ -93,7 +107,8 @@ public class ProductEditorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_product, menu);
+        if (Objects.equals(action, Intent.ACTION_EDIT))
+            getMenuInflater().inflate(R.menu.menu_product_editor, menu);
         return true;
     }
 
@@ -105,11 +120,22 @@ public class ProductEditorActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_delete) {
+            deleteProduct();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteProduct() {
+        getContentResolver().delete(ProductProvider.CONTENT_URI, productFilter, null);
+        if (!Validate.isEmpty(imagePath)) {
+            deleteFile(getFileStreamPath(imagePath).toString());
+        }
+
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     public void ChangeProductImage(View view) {
@@ -123,18 +149,19 @@ public class ProductEditorActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-
                 Uri selectedImage = data.getData();
                 String[] imagePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor imageCursor = getContentResolver().query(selectedImage, imagePathColumn, null, null, null);
-                imageCursor.moveToFirst();
+                if (imageCursor != null) {
+                    imageCursor.moveToFirst();
+                    imagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
+                    imageCursor.close();
 
-                imagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
-                imageCursor.close();
-                bitmapImage = BitmapFactory.decodeFile(imagePath);
-                product_image.setImageBitmap(bitmapImage);
-
-
+                    bitmapImage = BitmapFactory.decodeFile(imagePath);
+                    product_image.setImageBitmap(bitmapImage);
+                } else {
+                    Toast.makeText(ProductEditorActivity.this, "Unable to get image from database!", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(ProductEditorActivity.this, "NO Data", Toast.LENGTH_SHORT).show();
             }
@@ -142,7 +169,12 @@ public class ProductEditorActivity extends AppCompatActivity {
     }
 
     private long insertProduct(ContentValues productValues) {
-        return Long.parseLong(getContentResolver().insert(ProductProvider.CONTENT_URI, productValues).getLastPathSegment());
+        Uri uri = getContentResolver().insert(ProductProvider.CONTENT_URI, productValues);
+        long id = 0;
+        if (uri != null) {
+            id = Long.parseLong(uri.getLastPathSegment());
+        }
+        return id;
     }
 
     @NonNull

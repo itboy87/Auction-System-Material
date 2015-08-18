@@ -39,7 +39,7 @@
 
         <activity
             android:name=".Activities.ProductEditorActivity"
-            android:label="@string/title_activity_add_product"
+            android:label="@string/title_activity_product_editor"
             android:parentActivityName=".Activities.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

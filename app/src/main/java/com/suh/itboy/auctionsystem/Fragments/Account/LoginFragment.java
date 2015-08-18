@@ -30,6 +30,7 @@ public class LoginFragment extends Fragment {
     EditText email;
     EditText pass;
     TextView createAccountText;
+
     public LoginFragment() {
         // Required empty public constructor
     }
