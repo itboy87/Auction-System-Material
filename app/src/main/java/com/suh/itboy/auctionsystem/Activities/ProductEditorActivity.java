@@ -38,7 +38,8 @@ public class ProductEditorActivity extends AppCompatActivity {
     EditText product_description;
     EditText product_price;
     Bitmap bitmapImage = null;
-    String imagePath = "";
+    String newImagePath = "";
+    String oldImagePath = "";
 
     String action = Intent.ACTION_INSERT;
     String productFilter;
@@ -83,14 +84,14 @@ public class ProductEditorActivity extends AppCompatActivity {
                     product_price.setText(String.valueOf(price));
                 }
 
-                String imagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
+                oldImagePath = cursor.getString(cursor.getColumnIndex(ProductDBAdapter.COLUMN_IMAGE));
                 cursor.close();
-                if (imagePath != null && imagePath.length() > 0) {
+                if (oldImagePath != null && oldImagePath.length() > 0) {
 
-//            Glide.with(context).load(context.getFileStreamPath(imagePath)).into(image);
+//            Glide.with(context).load(context.getFileStreamPath(newImagePath)).into(image);
                     product_image.setImageDrawable(
                             Drawable.createFromPath(
-                                    getFileStreamPath(imagePath).toString()
+                                    getFileStreamPath(oldImagePath).toString()
                             )
                     );
                 } else {
@@ -130,8 +131,10 @@ public class ProductEditorActivity extends AppCompatActivity {
 
     private void deleteProduct() {
         getContentResolver().delete(ProductProvider.CONTENT_URI, productFilter, null);
-        if (!Validate.isEmpty(imagePath)) {
-            deleteFile(getFileStreamPath(imagePath).toString());
+        if (!Validate.isEmpty(oldImagePath)) {
+            if (!getFileStreamPath(oldImagePath).delete()) {
+                Toast.makeText(ProductEditorActivity.this, "Unable To Delete Product Image.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         setResult(Activity.RESULT_OK);
@@ -154,10 +157,10 @@ public class ProductEditorActivity extends AppCompatActivity {
                 Cursor imageCursor = getContentResolver().query(selectedImage, imagePathColumn, null, null, null);
                 if (imageCursor != null) {
                     imageCursor.moveToFirst();
-                    imagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
+                    newImagePath = imageCursor.getString(imageCursor.getColumnIndex(imagePathColumn[0]));
                     imageCursor.close();
 
-                    bitmapImage = BitmapFactory.decodeFile(imagePath);
+                    bitmapImage = BitmapFactory.decodeFile(newImagePath);
                     product_image.setImageBitmap(bitmapImage);
                 } else {
                     Toast.makeText(ProductEditorActivity.this, "Unable to get image from database!", Toast.LENGTH_SHORT).show();
@@ -236,8 +239,8 @@ public class ProductEditorActivity extends AppCompatActivity {
             setResult(Activity.RESULT_CANCELED);
         }
 
-        if (imagePath.length() > 0 && bitmapImage != null && id > 0) {
-            String imageInternalPath = productId + "." + App.getExtension(imagePath);
+        if (newImagePath.length() > 0 && bitmapImage != null && id > 0) {
+            String imageInternalPath = productId + "." + App.getExtension(newImagePath);
 
             if (App.writeImageToInternal(getApplicationContext(), bitmapImage, imageInternalPath)) {
                 if (!(insertProductImage(imageInternalPath, productFilter) > 0)) {
