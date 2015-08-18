@@ -51,4 +51,12 @@ public class UserSessionHelper {
     public boolean isUserLogin() {
         return preferences.getBoolean(KEY_IS_USER_LOGIN, false);
     }
+
+    public String getUserName() {
+        return preferences.getString(KEY_NAME, "");
+    }
+
+    public String getUserEmail() {
+        return preferences.getString(KEY_EMAIL, "");
+    }
 }

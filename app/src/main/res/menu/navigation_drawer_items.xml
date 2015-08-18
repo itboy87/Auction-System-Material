@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/navigation_item_1"
-            android:checked="true"
-            android:icon="@drawable/ic_action_home"
-            android:title="Item 1"/>
-        <item
-            android:id="@+id/navigation_item_2"
-            android:icon="@drawable/ic_action_home"
-            android:title="Item 2"/>
-    </group>
+    <item
+        android:layout_gravity="bottom"
+        android:title="AUCTIONS" />
+    <item
+        android:id="@+id/navigation_item_1"
+        android:checked="true"
+        android:icon="@drawable/ic_action_home"
+        android:title="Browse" />
+    <item
+        android:id="@+id/navigation_item_2"
+        android:icon="@drawable/ic_action_home"
+        android:title="My Auctions" />
+    <item
+        android:id="@+id/navigation_item_3"
+        android:checked="true"
+        android:icon="@drawable/ic_action_home"
+        android:title="Won Auctions" />
+    <item
+        android:id="@+id/navigation_item_4"
+        android:icon="@drawable/ic_action_home"
+        android:title="Bid &amp; Wishlist" />
+    <item
+        android:layout_gravity="bottom"
+        android:title="CROWD" />
+    <item
+        android:id="@+id/navigation_item_5"
+        android:checked="true"
+        android:icon="@drawable/ic_action_home"
+        android:title="My Crowd" />
+    <item
+        android:id="@+id/navigation_item_6"
+        android:icon="@drawable/ic_action_home"
+        android:title="Payout" />
+    <item
+        android:id="@+id/navigation_item_7"
+        android:icon="@drawable/ic_action_home"
+        android:title="Activity Task" />
+
 </menu>

@@ -19,10 +19,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suh.itboy.auctionsystem.Adapters.Database.ProductDBAdapter;
@@ -82,6 +84,9 @@ public class DashboardActivity extends AppCompatActivity implements LoaderManage
     private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        View nav_header = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.nav_header, null);
+        ((TextView) nav_header.findViewById(R.id.name)).setText(UserSessionHelper.getInstance(getApplicationContext()).getUserName());
+        navigationView.addHeaderView(nav_header);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
