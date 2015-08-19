@@ -57,6 +57,17 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#2b4053"
-        app:menu="@menu/navigation_drawer_items" />
+        app:menu="@menu/navigation_drawer_items">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dashboard Test Item" />
+        </FrameLayout>
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
